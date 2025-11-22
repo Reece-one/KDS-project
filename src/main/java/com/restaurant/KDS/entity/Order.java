@@ -1,4 +1,4 @@
-package entity;
+package com.restaurant.KDS.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;

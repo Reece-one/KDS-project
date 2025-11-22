@@ -1,9 +1,8 @@
-package entity;
+package com.restaurant.KDS.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Table(name = "order_items")
@@ -32,11 +31,6 @@ public class OrderItem {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "order_item_stations", joinColumns = @JoinColumn(name = "order_item_id"))
-    @Column(name = "stations")
-    private List<String> stations = new ArrayList<>();
 
     public OrderItem() {}
 
