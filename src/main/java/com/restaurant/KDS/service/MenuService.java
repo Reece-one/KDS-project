@@ -13,14 +13,17 @@ public class MenuService {
 
     @Autowired
     public MenuService(MenuItemRepository menuItemRepository) {
+
         this.menuItemRepository = menuItemRepository;
     }
 
     public List<MenuItem> getAllMenuItems() {
+
         return menuItemRepository.findAll();
     }
 
     public MenuItem saveMenuItem(MenuItem item) {
+
         return menuItemRepository.save(item);
     }
 }

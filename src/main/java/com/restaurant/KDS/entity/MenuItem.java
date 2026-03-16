@@ -33,10 +33,9 @@ public class MenuItem {
     @Column(name = "allergen")
     private List<String> allergens = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "menu_item_stations", joinColumns = @JoinColumn(name = "menu_item_id"))
-    @Column(name = "stations")
-    private List<String> stations = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "menu_item_stations", joinColumns = @JoinColumn(name = "menu_item_id"), inverseJoinColumns = @JoinColumn(name = "station_id"))
+    private List<Station> stations = new ArrayList<>();
 
     @Column(nullable = false)
     private Boolean available = true;
@@ -79,8 +78,8 @@ public class MenuItem {
     public List<String> getIngredients() {return ingredients;}
     public void setIngredients(List<String> ingredients) {this.ingredients = ingredients;}
 
-    public List<String> getStations() {return stations;}
-    public void setStations(List<String> stations) {this.stations = stations;}
+    public List<Station> getStations() {return stations;}
+    public void setStations(List<Station> stations) {this.stations = stations;}
 
     public List<String> getAllergens() {return allergens;}
     public void setAllergens(List<String> allergens) {this.allergens = allergens;}
