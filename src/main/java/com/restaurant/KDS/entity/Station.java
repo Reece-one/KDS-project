@@ -1,6 +1,7 @@
 package com.restaurant.KDS.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,7 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -23,14 +25,21 @@ public class Station {
 
     public Station() {}
 
-    public void setId(Long id) {
-        this.id = id;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
 
+    public void setId(Long id) {this.id = id;}
+    public Long getId() {return id;}
 
+    public void setName(String name) {this.name = name;}
+    public String getName() {return name;}
 }

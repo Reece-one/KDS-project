@@ -50,8 +50,6 @@ public class KdsfypApplication implements CommandLineRunner {
         stations.add("grill");
         stations.add("set");
 
-        burger.setStations(stations);
-
         menuService.saveMenuItem(burger);
 
         List<MenuItem> menuItems = menuService.getAllMenuItems();
