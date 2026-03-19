@@ -5,6 +5,7 @@ import com.restaurant.KDS.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,5 +28,9 @@ public class StationService {
 
     public Optional<Station> findById (Long id) {
         return stationRepository.findById(id);
+    }
+
+    public List<Station> getAllStations() {
+        return stationRepository.findAll();
     }
 }

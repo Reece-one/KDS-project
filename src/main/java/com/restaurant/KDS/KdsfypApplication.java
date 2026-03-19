@@ -23,7 +23,7 @@ public class KdsfypApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        MenuItem burger = new MenuItem();
+       /* MenuItem burger = new MenuItem();
         burger.setName("Burger");
         burger.setPrice(BigDecimal.valueOf(10.00));
         burger.setCategory("Main");
@@ -55,6 +55,7 @@ public class KdsfypApplication implements CommandLineRunner {
         List<MenuItem> menuItems = menuService.getAllMenuItems();
         System.out.println("Menu items in database: " + menuItems.size());
         menuItems.forEach(item -> System.out.println("- " + item.getName()));
+        */
 
     }
 }
