@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.restaurant.KDS.controller.EditStationController"
+      prefHeight="200.0" prefWidth="300.0">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <Label text="Station Name"/>
+    <TextField fx:id="nameTextField"/>
+    <HBox spacing="10">
+        <Button text="Save" onAction="#onSave"/>
+        <Button text="Delete" onAction="#onDelete"/>
+    </HBox>
+</VBox>

@@ -34,9 +34,31 @@ public class StationConfigController {
 
         for (Station station : stations) {
             Button button = new Button(station.getName());
+            button.setOnAction(event -> openStationModal(station));
             stationFlowPane.getChildren().add(button);
         }
 
+    }
+
+    private void openStationModal(Station station) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EditStation.fxml"));
+            loader.setControllerFactory(springContext::getBean);
+            Parent root = loader.load();
+
+            EditStationController controller = loader.getController();
+            controller.setStation(station);
+
+            Stage modal = new Stage();
+            modal.setTitle("Edit Station");
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.setScene(new Scene(root));
+            modal.showAndWait();
+
+            resetStation();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

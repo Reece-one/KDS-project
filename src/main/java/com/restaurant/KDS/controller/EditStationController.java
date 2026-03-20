@@ -1,0 +1,45 @@
+package com.restaurant.KDS.controller;
+
+import com.restaurant.KDS.entity.Station;
+import com.restaurant.KDS.service.StationService;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import org.springframework.stereotype.Component;
+
+@Component
+public class EditStationController {
+
+    private final StationService stationService;
+    private Station station;
+
+    @FXML
+    private TextField nameTextField;
+
+    public EditStationController(StationService stationService) {
+        this.stationService = stationService;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+        nameTextField.setText(station.getName());
+    }
+
+    @FXML
+    private void onSave() {
+        station.setName(nameTextField.getText());
+        stationService.saveStation(station);
+        closeModal();
+    }
+
+    @FXML
+    private void onDelete() {
+        stationService.deleteStation(station);
+        closeModal();
+    }
+
+    private void closeModal() {
+        Stage stage = (Stage) nameTextField.getScene().getWindow();
+        stage.close();
+    }
+}
