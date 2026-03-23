@@ -15,22 +15,27 @@ public class StationService {
 
     @Autowired
     public StationService(StationRepository stationRepository) {
+
         this.stationRepository = stationRepository;
     }
 
     public void saveStation(Station station) {
+
         stationRepository.save(station);
     }
 
     public void deleteStation(Station station) {
+
         stationRepository.delete(station);
     }
 
     public Optional<Station> findById (Long id) {
+
         return stationRepository.findById(id);
     }
 
     public List<Station> getAllStations() {
+
         return stationRepository.findAll();
     }
 }
