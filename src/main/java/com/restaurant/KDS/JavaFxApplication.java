@@ -19,7 +19,7 @@ public class JavaFxApplication extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("/fxml/StationConfig.fxml"));
+        FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("/fxml/MenuItemConfig.fxml"));
         fxmlloader.setControllerFactory(springContext::getBean);
         Parent root = fxmlloader.load();
 
