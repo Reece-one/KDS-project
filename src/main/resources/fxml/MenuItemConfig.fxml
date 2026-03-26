@@ -19,10 +19,10 @@
    <center>
       <TableView fx:id="menuItemTableView" prefHeight="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="idColumn" text="ID" />
-          <TableColumn fx:id="nameColumn" text="Name" />
-            <TableColumn fx:id="categoryColumn" text="Category" />
-            <TableColumn fx:id="availableColumn" text="Available" />
+          <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="nameColumn" prefWidth="107.33334350585938" text="Name" />
+            <TableColumn fx:id="categoryColumn" prefWidth="116.6666259765625" text="Category" />
+            <TableColumn fx:id="availableColumn" prefWidth="143.3333740234375" text="Available" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

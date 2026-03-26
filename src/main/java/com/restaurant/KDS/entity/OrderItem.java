@@ -45,7 +45,7 @@ public class OrderItem {
     public Order getOrder() {return order;}
     public void setOrder(Order order) {this.order = order;}
 
-    public String modifications() {return modifications;}
+    public String getModifications() {return modifications;}
     public void setModifications(String modifications) {this.modifications = modifications;}
 
     public MenuItem getMenuItem() {return menuItem;}
