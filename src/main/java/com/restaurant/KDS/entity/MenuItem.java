@@ -23,17 +23,17 @@ public class MenuItem {
     @Column(nullable = false)
     private String category;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "menu_item_ingredients", joinColumns = @JoinColumn(name = "menu_item_id"))
     @Column(name = "ingredient")
     private List<String> ingredients = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "menu_item_allergens", joinColumns = @JoinColumn(name = "menu_item_id"))
     @Column(name = "allergen")
     private List<String> allergens = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "menu_item_stations", joinColumns = @JoinColumn(name = "menu_item_id"), inverseJoinColumns = @JoinColumn(name = "station_id"))
     private List<Station> stations = new ArrayList<>();
 
