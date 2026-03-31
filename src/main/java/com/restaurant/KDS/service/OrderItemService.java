@@ -20,7 +20,12 @@ public class OrderItemService {
     }
 
     public OrderItem saveOrderItem(OrderItem orderItem) {
-        //Checks if the order item already exists, if so then increment the quantity
+        //For editing an existing Order item, updates the item
+        if (orderItem.getId() != null) {
+            return orderItemRepository.save(orderItem);
+        }
+
+        //Checks if the new order item is a duplicate, if so then increment the quantity
         Optional<OrderItem> existing = orderItemRepository.findByOrderAndMenuItem(
                 orderItem.getOrder(), orderItem.getMenuItem()
         );
