@@ -1,4 +1,4 @@
-package com.restaurant.KDS.controller;
+package com.restaurant.KDS.controller.menuItem;
 
 import com.restaurant.KDS.entity.MenuItem;
 import com.restaurant.KDS.entity.Station;

@@ -3,6 +3,8 @@ package com.restaurant.KDS.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -37,6 +39,9 @@ public class Order {
 
     @Column(name = "served_at")
     private LocalDateTime servedAt;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public Order() {}
 
@@ -78,4 +83,7 @@ public class Order {
 
     public LocalDateTime getServedAt() {return servedAt;}
     public void setServedAt(LocalDateTime servedAt) {this.servedAt = servedAt;}
+
+    public List<OrderItem> getOrderItems() {return orderItems;}
+    // public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}
 }

@@ -1,0 +1,216 @@
+package com.restaurant.KDS.controller.orderEntry;
+
+import com.restaurant.KDS.entity.MenuItem;
+import com.restaurant.KDS.entity.Order;
+import com.restaurant.KDS.entity.OrderItem;
+import com.restaurant.KDS.entity.Station;
+import com.restaurant.KDS.service.MenuService;
+import com.restaurant.KDS.service.OrderItemService;
+import com.restaurant.KDS.service.OrderService;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+public class OrderEntryController {
+
+    private final OrderItemService orderItemService;
+    private final OrderService orderService;
+    private final MenuService menuService;
+    private Order order;
+
+    public OrderEntryController(OrderItemService orderItemService, OrderService orderService, MenuService menuService) {
+        this.orderItemService = orderItemService;
+        this.orderService = orderService;
+        this.menuService = menuService;
+        this.order = new Order();
+    }
+
+    @FXML
+    private HBox categoryHbox;
+
+    @FXML
+    private FlowPane menuItemsByCategory;
+
+    @FXML
+    private Label selectedItemLabel;
+
+    @FXML
+    private VBox modificationsVbox;
+
+    @FXML
+    private Spinner<Integer> quantitySpinner;
+
+    @FXML
+    private TextField modificationTextField;
+
+    @FXML
+    private VBox currentOrderVbox;
+
+    @FXML
+    private TextField tableNameField;
+
+    @FXML
+    private ComboBox<String> eatInCombo;
+
+    @FXML
+    private Label totalLabel;
+
+    private MenuItem menuItem;
+
+    public void createBlankOrder() {
+        if (order.getId() == null) {
+            String tableName = tableNameField.getText();
+            if (tableName == null || tableName.trim().isEmpty()) {
+                tableName = "Unassigned";
+            }
+            order.setTableOrName(tableName);
+            order.setEatInOrTakeAway(eatInCombo.getValue() != null ? eatInCombo.getValue() : "Eat In");
+            order.setStatus("Pending");
+            order.setTotal(BigDecimal.ZERO);
+            orderService.saveOrder(order);
+        }
+    }
+    //Creates the modification, prefix should be either 'Extra' or 'No'
+    public void addModification(String prefix, String ingredient) {
+        boolean exists = modificationsVbox.getChildren().stream() //Checks if the modification already exists
+                .filter(node -> node instanceof Label)
+                .map(node -> ((Label) node).getText())
+                .anyMatch(text -> text.equals(prefix + ingredient));
+
+        if (!exists) {
+            Label label = new Label(prefix + ingredient);
+            label.setOnMouseClicked(event -> {
+                ((VBox) label.getParent()).getChildren().remove(label); //Can remove modification by clicking it
+            });
+            modificationsVbox.getChildren().add(label);
+        }
+    }
+
+    public void populateIngredients(MenuItem menuItem) {
+        selectedItemLabel.setText(menuItem.getName());
+
+        modificationsVbox.getChildren().clear();
+        List<String> ingredients = menuItem.getIngredients();
+
+        for (String ingredient : ingredients) {
+            HBox hBox = new HBox();
+            Label name = new Label(ingredient);
+            Button extra = new Button("+");
+            extra.setOnAction(extraEvent -> {
+                addModification("Extra ", ingredient);
+            });
+            Button remove = new Button("-");
+            remove.setOnAction(extraEvent -> {
+                addModification("No ", ingredient);
+            });
+
+            hBox.getChildren().addAll(name, extra, remove);
+            modificationsVbox.getChildren().add(hBox);
+        }
+
+        modificationsVbox.getChildren().add(new Separator());
+    }
+
+    public void showByCategory(String category) {
+        List<MenuItem> items = menuService.findByCategory(category);
+        menuItemsByCategory.getChildren().clear();
+
+        for (MenuItem item : items) {
+            Button button = new Button(item.getCategory());
+            button.setOnAction(event -> {
+                menuItem = item;
+                populateIngredients(item);
+            });
+            menuItemsByCategory.getChildren().add(button);
+        }
+    }
+
+    public void populateCategories() {
+        List<String> categories = menuService.getCategories();
+        categoryHbox.getChildren().clear();
+
+        for (String category : categories) {
+            Button button = new Button(category);
+            button.setOnAction(event -> {
+                showByCategory(category);
+            });
+            categoryHbox.getChildren().add(button);
+        }
+    }
+
+    public void populateCurrentOrder() {
+        currentOrderVbox.getChildren().clear();
+        List<OrderItem> items = order.getOrderItems();
+
+        for (OrderItem item : items) {
+            VBox vbox = new VBox();
+            Label name = new Label(item.getMenuItem().getName());
+            Label modification = new Label(item.getModifications());
+            Label quantity = new Label("X" + item.getQuantity().toString());
+            vbox.getChildren().addAll(name, modification, quantity);
+            currentOrderVbox.getChildren().add(vbox);
+        }
+    }
+
+    @FXML
+    public void addExtra() {
+        if (!selectedItemLabel.getText().equals("No item selected")) {
+            addModification("Add ", modificationTextField.getText());
+        }
+    }
+
+    @FXML
+    public void onSubmit() {
+        if (!order.getOrderItems().isEmpty() && !tableNameField.getText().isEmpty() && eatInCombo.getValue() != null) {
+            order.setTableOrName(tableNameField.getText());
+            order.setEatInOrTakeAway(eatInCombo.getValue());
+            order.setStatus("Open");
+            order.setTotal(orderItemService.getTotalByOrder(order));
+            orderService.saveOrder(order);
+        }
+    }
+
+    @FXML
+    public void addToOrder() {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+        orderItem.setMenuItem(menuItem);
+
+        String mods = modificationsVbox.getChildren().stream()
+                .filter(node -> node instanceof Label)
+                .map(node -> ((Label) node).getText())
+                .collect(Collectors.joining(", ")); //Concatenates the modification and separates them with a comma
+        orderItem.setModifications(mods);
+
+        orderItem.setQuantity(quantitySpinner.getValue());
+        createBlankOrder();
+        orderItemService.saveOrderItem(orderItem);
+        order = orderService.findById(order.getId()).get();
+        populateCurrentOrder();
+        totalLabel.setText("£ " + orderItemService.getTotalByOrder(order));
+
+    }
+
+    @FXML
+    public void onClear() {
+        orderItemService.deleteByOrder(order);
+        currentOrderVbox.getChildren().clear();
+        totalLabel.setText("£0.00");
+    }
+
+    @FXML
+    public void initialize() {
+        populateCategories();
+        quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1));
+        eatInCombo.getItems().addAll("Eat In", "Takeaway");
+    }
+
+}

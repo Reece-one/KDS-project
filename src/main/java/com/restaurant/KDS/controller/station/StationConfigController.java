@@ -1,4 +1,4 @@
-package com.restaurant.KDS.controller;
+package com.restaurant.KDS.controller.station;
 
 import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.StationService;

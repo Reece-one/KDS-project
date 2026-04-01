@@ -32,4 +32,13 @@ public class MenuService {
     public Optional<MenuItem> findById(Long id) {
        return menuItemRepository.findById(id);
     }
+
+    public List<String> getCategories() {
+        return menuItemRepository.findDistinctCategories();
+    }
+
+    public List<MenuItem> findByCategory(String category) {
+        return menuItemRepository.findByCategory(category);
+    }
+
 }
