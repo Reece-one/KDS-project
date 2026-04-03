@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="300.0" prefWidth="353.0" spacing="10" style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.orderEntry.EditOrderItemController">
+   <padding>
+      <Insets bottom="10" left="10" right="10" top="10" />
+   </padding>
+   <children>
+      <Label style="-fx-font-size: 16; -fx-font-weight: bold;" text="Edit Item" />
+      <Label fx:id="selectedItemLabel" style="-fx-font-style: italic;" text="No item selected" />
+      <Separator />
+      <HBox spacing="5">
+         <children>
+            <TextField fx:id="modificationTextField" promptText="Add extras" HBox.hgrow="ALWAYS" />
+            <Button onAction="#addExtra" text="+" />
+         </children>
+      </HBox>
+      <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox fx:id="modificationsVbox" prefHeight="200.0" prefWidth="100.0" />
+         </content>
+      </ScrollPane>
+      <Separator />
+      <HBox alignment="CENTER_LEFT" spacing="10">
+         <children>
+            <Label text="Qty:" />
+            <Spinner fx:id="quantitySpinner" prefWidth="80" />
+         </children>
+      </HBox>
+      <Button maxWidth="Infinity" onAction="#editOrderItem" style="-fx-base: #2196F3;" text="Edit" />
+   </children>
+</VBox>
