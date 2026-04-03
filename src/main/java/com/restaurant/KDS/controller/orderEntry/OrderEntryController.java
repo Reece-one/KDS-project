@@ -1,5 +1,6 @@
 package com.restaurant.KDS.controller.orderEntry;
 
+import com.restaurant.KDS.controller.station.EditStationController;
 import com.restaurant.KDS.entity.MenuItem;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
@@ -7,16 +8,26 @@ import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.MenuService;
 import com.restaurant.KDS.service.OrderItemService;
 import com.restaurant.KDS.service.OrderService;
+import com.restaurant.KDS.util.ViewHelper;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.restaurant.KDS.util.ViewHelper.loadView;
 
 @Component
 public class OrderEntryController {
@@ -25,11 +36,13 @@ public class OrderEntryController {
     private final OrderService orderService;
     private final MenuService menuService;
     private Order order;
+    private final ConfigurableApplicationContext springContext;
 
-    public OrderEntryController(OrderItemService orderItemService, OrderService orderService, MenuService menuService) {
+    public OrderEntryController(OrderItemService orderItemService, OrderService orderService, MenuService menuService, ConfigurableApplicationContext springContext) {
         this.orderItemService = orderItemService;
         this.orderService = orderService;
         this.menuService = menuService;
+        this.springContext = springContext;
         this.order = new Order();
     }
 
@@ -94,6 +107,8 @@ public class OrderEntryController {
         }
     }
 
+
+
     public void populateIngredients(MenuItem menuItem) {
         selectedItemLabel.setText(menuItem.getName());
 
@@ -124,7 +139,7 @@ public class OrderEntryController {
         menuItemsByCategory.getChildren().clear();
 
         for (MenuItem item : items) {
-            Button button = new Button(item.getCategory());
+            Button button = new Button(item.getName());
             button.setOnAction(event -> {
                 menuItem = item;
                 populateIngredients(item);
@@ -146,6 +161,22 @@ public class OrderEntryController {
         }
     }
 
+    public void loadEditOrderView(ConfigurableApplicationContext springContext, Node node, OrderItem orderItem) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EditOrderItem.fxml"));
+        loader.setControllerFactory(springContext::getBean);
+        Parent root = loader.load();
+
+        EditOrderItemController controller = loader.getController();
+        controller.setOrderItem(orderItem);
+
+        Stage modal = new Stage();
+        modal.setTitle("Edit order item");
+        modal.initModality(Modality.APPLICATION_MODAL);
+        modal.initOwner(node.getScene().getWindow());
+        modal.setScene(new Scene(root));
+        modal.showAndWait();
+    }
+
     public void populateCurrentOrder() {
         currentOrderVbox.getChildren().clear();
         List<OrderItem> items = order.getOrderItems();
@@ -156,6 +187,14 @@ public class OrderEntryController {
             Label modification = new Label(item.getModifications());
             Label quantity = new Label("X" + item.getQuantity().toString());
             vbox.getChildren().addAll(name, modification, quantity);
+            vbox.setOnMouseClicked(event -> {
+                try {
+                    loadEditOrderView(springContext, vbox,  item);
+                    populateCurrentOrder();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
             currentOrderVbox.getChildren().add(vbox);
         }
     }
