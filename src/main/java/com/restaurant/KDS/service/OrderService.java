@@ -5,6 +5,7 @@ import com.restaurant.KDS.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,5 +23,9 @@ public class OrderService {
 
     public Optional<Order> findById(Long id) {
         return orderRepository.findById(id);
+    }
+
+    public List<Order> findByStatus(String status) {
+        return orderRepository.findByStatus(status);
     }
 }
