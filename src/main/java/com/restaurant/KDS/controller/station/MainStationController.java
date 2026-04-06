@@ -54,9 +54,15 @@ public class MainStationController {
         headerHbox.getChildren().addAll(inOrOutIcon, titleLabel);
         containerVbox.getChildren().add(headerHbox);
 
-        //Creates the main content of the order card
+        //Gets only the order items that correspond to the station
+        List<OrderItem> orderItems = order.getOrderItems().stream()
+                .filter(orderItem -> orderItem.getMenuItem().getStations().stream()
+                        .anyMatch(s -> s.getId().equals(station.getId())))
+                .toList();
+
+        //Creates the main content of the order card (The order items and modifications)
         VBox mainContentVbox = new VBox();
-        for (OrderItem orderItem : order.getOrderItems()) {
+        for (OrderItem orderItem : orderItems) {
             VBox itemVbox = new VBox();
             HBox nameQuanitityHbox = new HBox();
             Text quantityText = new Text(orderItem.getQuantity().toString());
@@ -77,9 +83,21 @@ public class MainStationController {
     }
 
     @FXML
+    //Gets only orders that have at least one item that corresponds to the current station
+    public List<Order> openOrdersByStation () {
+        List<Order> openOrders = orderService.findByStatus("Open").stream()
+                .filter(orders -> orders.getOrderItems().stream()
+                        .anyMatch(orderItems -> orderItems.getMenuItem().getStations().stream()
+                                .anyMatch(s -> s.getId().equals(station.getId()))))
+                .toList();
+        return openOrders;
+    }
+
+    @FXML
+    //Populates the screen with necessary open orders
     public void populateOpenOrders () {
         mainFlowPane.getChildren().clear();
-        List<Order> openOrders = orderService.findByStatus("Open");
+        List<Order> openOrders = openOrdersByStation();
         for (Order order : openOrders) {
             createOrderCard(order);
         }
@@ -88,12 +106,10 @@ public class MainStationController {
     public void setStation(Station station) {
         this.station = station;
         populateOpenOrders();
+        orderAmountLabel.setText(String.valueOf(openOrdersByStation().size()));
     }
 
     @FXML
     public void initialize() {
-        populateOpenOrders();
-        int count = orderService.findByStatus("Open").size();
-        orderAmountLabel.setText(String.valueOf(count));
     }
 }

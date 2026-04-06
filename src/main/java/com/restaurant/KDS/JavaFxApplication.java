@@ -48,6 +48,15 @@ public class JavaFxApplication extends javafx.application.Application {
             stationStage.setScene(new Scene(root1));
             stationStage.show();
         }
+
+        FXMLLoader fxmlloader2 = new FXMLLoader(getClass().getResource("/fxml/MenuItemConfig.fxml"));
+        fxmlloader2.setControllerFactory(springContext::getBean);
+        Parent root2 = fxmlloader2.load();
+
+        Stage stationStage = new Stage();
+        stationStage.setTitle("Menu Item config");
+        stationStage.setScene(new Scene(root2));
+        stationStage.show();
     }
 
     @Override
