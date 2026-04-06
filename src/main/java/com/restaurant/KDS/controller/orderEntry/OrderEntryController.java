@@ -1,13 +1,12 @@
 package com.restaurant.KDS.controller.orderEntry;
 
 import com.restaurant.KDS.controller.station.EditStationController;
+import com.restaurant.KDS.entity.*;
 import com.restaurant.KDS.entity.MenuItem;
-import com.restaurant.KDS.entity.Order;
-import com.restaurant.KDS.entity.OrderItem;
-import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.MenuService;
 import com.restaurant.KDS.service.OrderItemService;
 import com.restaurant.KDS.service.OrderService;
+import com.restaurant.KDS.service.OrderStationService;
 import com.restaurant.KDS.util.ViewHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +23,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.restaurant.KDS.util.ViewHelper.loadView;
@@ -35,14 +36,16 @@ public class OrderEntryController {
     private final OrderItemService orderItemService;
     private final OrderService orderService;
     private final MenuService menuService;
+    private final OrderStationService orderStationService;
     private Order order;
     private final ConfigurableApplicationContext springContext;
 
-    public OrderEntryController(OrderItemService orderItemService, OrderService orderService, MenuService menuService, ConfigurableApplicationContext springContext) {
+    public OrderEntryController(OrderItemService orderItemService, OrderService orderService, MenuService menuService, ConfigurableApplicationContext springContext, OrderStationService orderStationService, OrderStationService orderStationService1) {
         this.orderItemService = orderItemService;
         this.orderService = orderService;
         this.menuService = menuService;
         this.springContext = springContext;
+        this.orderStationService = orderStationService1;
         this.order = new Order();
     }
 
@@ -207,6 +210,20 @@ public class OrderEntryController {
     }
 
     @FXML
+    public void createOrderStations() {
+        Set<Station> stations = new HashSet<>();
+        for (OrderItem orderItem : order.getOrderItems()) {
+            stations.addAll(orderItem.getMenuItem().getStations());
+        }
+        for (Station station : stations) {
+            OrderStation orderStation = new OrderStation();
+            orderStation.setOrder(order);
+            orderStation.setStation(station);
+            orderStationService.save(orderStation);
+        }
+    }
+
+    @FXML
     public void onSubmit() {
         if (!order.getOrderItems().isEmpty() && !tableNameField.getText().isEmpty() && eatInCombo.getValue() != null) {
             order.setTableOrName(tableNameField.getText());
@@ -214,6 +231,7 @@ public class OrderEntryController {
             order.setStatus("Open");
             order.setTotal(orderItemService.getTotalByOrder(order));
             orderService.saveOrder(order);
+            createOrderStations();
         }
     }
 

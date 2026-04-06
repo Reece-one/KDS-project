@@ -2,6 +2,7 @@ package com.restaurant.KDS.controller.station;
 
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
+import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.OrderItemService;
 import com.restaurant.KDS.service.OrderService;
 import javafx.fxml.FXML;
@@ -12,19 +13,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Scope("prototype")
 public class MainStationController {
 
     private final OrderService orderService;
-    private final OrderItemService orderItemService;
+    private Station station;
 
-    public MainStationController(OrderService orderService, OrderItemService orderItemService) {
+    public MainStationController(OrderService orderService) {
         this.orderService = orderService;
-        this.orderItemService = orderItemService;
     }
 
     @FXML
@@ -81,6 +83,11 @@ public class MainStationController {
         for (Order order : openOrders) {
             createOrderCard(order);
         }
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+        populateOpenOrders();
     }
 
     @FXML
