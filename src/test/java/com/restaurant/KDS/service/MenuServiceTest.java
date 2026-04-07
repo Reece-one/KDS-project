@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
+@ActiveProfiles("test")
 public class MenuServiceTest {
     @Autowired
     private MenuService menuService;
@@ -116,5 +118,47 @@ public class MenuServiceTest {
         assertThrows(Exception.class, () -> {
             createTestMenuItem("Burger");
         });
+    }
+
+    @Test
+    public void testFindByCategory() {
+        MenuItem burger = createTestMenuItem("Burger");
+        MenuItem item2 = new MenuItem();
+        item2.setName("Fries");
+        item2.setPrice(BigDecimal.valueOf(5.00));
+        item2.setCategory("Side");
+        item2.setAvailable(true);
+        item2.setPrepTimeMinutes(2);
+        item2.setIngredients(new ArrayList<>(List.of("potato")));
+        item2.setAllergens(new ArrayList<>());
+        item2.setStations(new ArrayList<>());
+        menuService.saveMenuItem(item2);
+
+        List<MenuItem> mains = menuService.findByCategory("Main");
+        assertFalse(mains.isEmpty());
+        assertTrue(mains.stream().allMatch(m -> m.getCategory().equals("Main")));
+
+        List<MenuItem> sides = menuService.findByCategory("Side");
+        assertFalse(sides.isEmpty());
+        assertTrue(sides.stream().allMatch(m -> m.getCategory().equals("Side")));
+    }
+
+    @Test
+    public void testFindAllCategories() {
+        createTestMenuItem("Burger");
+        MenuItem item2 = new MenuItem();
+        item2.setName("Fries");
+        item2.setPrice(BigDecimal.valueOf(5.00));
+        item2.setCategory("Side");
+        item2.setAvailable(true);
+        item2.setPrepTimeMinutes(2);
+        item2.setIngredients(new ArrayList<>(List.of("potato")));
+        item2.setAllergens(new ArrayList<>());
+        item2.setStations(new ArrayList<>());
+        menuService.saveMenuItem(item2);
+
+        List<String> categories = menuService.getCategories();
+        assertTrue(categories.contains("Main"));
+        assertTrue(categories.contains("Side"));
     }
 }

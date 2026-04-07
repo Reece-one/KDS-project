@@ -5,8 +5,15 @@ import com.restaurant.KDS.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
+@Transactional
 @SpringBootTest
 public class StationServiceTest {
 
@@ -50,5 +57,22 @@ public class StationServiceTest {
         Station station = new Station();
         station.setName("");
         assertThrows(Exception.class, () -> stationService.saveStation(station));
+    }
+
+    @Test
+    public void testGetAllStations() {
+        Station grill = new Station();
+        grill.setName("Grill");
+        stationService.saveStation(grill);
+
+        Station fry = new Station();
+        fry.setName("Fry");
+        stationService.saveStation(fry);
+
+        List<Station> stations = stationService.getAllStations();
+
+        assertFalse(stations.isEmpty());
+        assertEquals(2, stations.size());
+
     }
 }

@@ -51,7 +51,7 @@ public class OrderItemServiceTest {
         order.setTableOrName("1");
         order.setStatus("open");
         order.setEatInOrTakeAway("eat_in");
-        order.setTotal(BigDecimal.valueOf(10.00));
+        order.setTotal(BigDecimal.valueOf(00.00));
         orderService.saveOrder(order);
         return order;
     }
@@ -66,6 +66,7 @@ public class OrderItemServiceTest {
         orderItem.setQuantity(1);
         orderItem.setStatus("incomplete");
         orderItemService.saveOrderItem(orderItem);
+        order.setTotal(orderItemService.getTotalByOrder(order));
         return orderItem;
     }
 
@@ -104,5 +105,21 @@ public class OrderItemServiceTest {
         OrderItem updated = orderItemService.findById(orderItem.getId()).get();
         assertEquals(4, updated.getQuantity());
         assertNull(orderItem2.getId());
+    }
+
+    @Test
+    public void testDeleteByOrder() {
+        OrderItem orderItem = createTestOrderItem();
+        orderItemService.deleteByOrder(orderItem.getOrder());
+
+        assertFalse(orderItemService.findById(orderItem.getId()).isPresent());
+    }
+
+    @Test
+    public void testGetTotalByOrder() {
+        OrderItem orderItem = createTestOrderItem();
+        orderItemService.saveOrderItem(orderItem);
+
+        assertEquals(0, BigDecimal.valueOf(10.00).compareTo(orderItem.getOrder().getTotal()));
     }
 }
