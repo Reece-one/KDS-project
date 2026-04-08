@@ -4,13 +4,16 @@ import com.restaurant.KDS.entity.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
-
+@Transactional
+@ActiveProfiles("test")
 @SpringBootTest
 public class OrderServiceTest {
 
@@ -33,7 +36,7 @@ public class OrderServiceTest {
     public void testFindByStatus() {
         Order order = new Order();
         order.setTableOrName("1");
-        order.setStatus("open");
+        order.setStatus("Open");
         order.setEatInOrTakeAway("eat_in");
         order.setTotal(BigDecimal.valueOf(10.00));
         orderService.saveOrder(order);

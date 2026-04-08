@@ -1,48 +1,39 @@
 package com.restaurant.KDS.controller.station;
 
-import com.restaurant.KDS.controller.orderEntry.EditOrderItemController;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
 import com.restaurant.KDS.entity.OrderStation;
 import com.restaurant.KDS.entity.Station;
-import com.restaurant.KDS.service.OrderItemService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import static java.awt.SystemColor.text;
 
 @Component
-@Scope("prototype")
-public class MainStationController {
+public class ExpoStationController {
 
     private final OrderService orderService;
     private final OrderStationService orderStationService;
-    private Station station;
     private final ConfigurableApplicationContext springContext;
 
-    public MainStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
+    public ExpoStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
         this.orderService = orderService;
         this.orderStationService = orderStationService;
         this.springContext = springContext;
@@ -55,15 +46,22 @@ public class MainStationController {
     private Label orderAmountLabel;
 
     @FXML
-    public void createOrderCard(Order order) {
+    public void completeOrder(Order order) {
+        if (orderStationService.allStationsCompleted(order)) {
+            order.setStatus("Complete");
+            order.setCompletedAt(LocalDateTime.now());
+            orderService.saveOrder(order);
+        }
+    }
+
+    @FXML
+    public void createOrderCard (Order order) {
         VBox containerVbox = new VBox();
 
         //Creates the header for the order card
         HBox headerHbox = new HBox();
         headerHbox.setOnMouseClicked((event) -> {
-            OrderStation orderStation = orderStationService.findByOrderAndStation(order, station).get();
-            orderStation.setCompleted(true);
-            orderStationService.save(orderStation);
+            completeOrder(order);
             containerVbox.getChildren().clear();
             ((Pane) containerVbox.getParent()).getChildren().remove(containerVbox);
         });
@@ -80,13 +78,9 @@ public class MainStationController {
         headerHbox.getChildren().addAll(inOrOutIcon, titleLabel);
         containerVbox.getChildren().add(headerHbox);
 
-        //Gets only the order items that correspond to the station
-        List<OrderItem> orderItems = order.getOrderItems().stream()
-                .filter(orderItem -> orderItem.getMenuItem().getStations().stream()
-                        .anyMatch(s -> s.getId().equals(station.getId())))
-                .toList();
 
         //Creates the main content of the order card (The order items and modifications)
+        List<OrderItem> orderItems = order.getOrderItems();
         VBox mainContentVbox = new VBox();
         for (OrderItem orderItem : orderItems) {
             VBox itemVbox = new VBox();
@@ -108,36 +102,15 @@ public class MainStationController {
         mainFlowPane.getChildren().add(containerVbox);
     }
 
-    @FXML
-    //Gets only orders that have at least one item that corresponds to the current station
-    public List<Order> openOrdersByStation() {
-        List<Order> openOrders = orderService.findByStatus("Open").stream()
-                .filter(orders -> orders.getOrderItems().stream()
-                        .anyMatch(orderItems -> orderItems.getMenuItem().getStations().stream()
-                                .anyMatch(s -> s.getId().equals(station.getId()))))
-                .toList();
-        return openOrders;
-    }
 
     @FXML
-    //Populates the screen with necessary open orders
-    public void populateOpenOrders() {
+    //Populates the screen with all open orders
+    public void populateOpenOrders () {
         mainFlowPane.getChildren().clear();
-        List<Order> openOrders = openOrdersByStation();
+        List<Order> openOrders = orderService.findByStatus("Open");
         for (Order order : openOrders) {
-            orderStationService.findByOrderAndStation(order, station)
-                    .ifPresent(orderStation -> {
-                        if (!orderStation.isCompleted()) {
-                            createOrderCard(order);
-                        }
-                    });
+            createOrderCard(order);
         }
-    }
-
-    public void setStation(Station station) {
-        this.station = station;
-        populateOpenOrders();
-        orderAmountLabel.setText(String.valueOf(openOrdersByStation().size()));
     }
 
     @FXML
@@ -156,5 +129,7 @@ public class MainStationController {
 
     @FXML
     public void initialize() {
+        populateOpenOrders();
+        orderAmountLabel.setText(String.valueOf(orderService.findByStatus("Open").size()));
     }
 }

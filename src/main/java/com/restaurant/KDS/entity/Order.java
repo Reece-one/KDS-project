@@ -37,8 +37,8 @@ public class Order {
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    @Column(name = "served_at")
-    private LocalDateTime servedAt;
+    @Column(name = "opened_at")
+    private LocalDateTime openedAt;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
@@ -81,8 +81,8 @@ public class Order {
     public LocalDateTime getCompletedAt() {return completedAt;}
     public void setCompletedAt(LocalDateTime completedAt) {this.completedAt = completedAt;}
 
-    public LocalDateTime getServedAt() {return servedAt;}
-    public void setServedAt(LocalDateTime servedAt) {this.servedAt = servedAt;}
+    public LocalDateTime getOpenedAt() {return openedAt;}
+    public void setOpenedAt(LocalDateTime openedAt) {this.openedAt = openedAt;}
 
     public List<OrderItem> getOrderItems() {return orderItems;}
     // public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}

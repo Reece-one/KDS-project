@@ -67,7 +67,6 @@ public class AddMenuItemController {
         ingredients = new ArrayList<>();
         allergens = new ArrayList<>();
         this.stationService = stationService;
-        stations = stationService.getAllStations();
     }
 
 
@@ -109,6 +108,9 @@ public class AddMenuItemController {
 
     @FXML
     public void initialize() {
+        ingredients.clear();
+        allergens.clear();
+        stations = stationService.getAllStations();
         addStations();
     }
 

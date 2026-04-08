@@ -23,6 +23,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -230,8 +231,18 @@ public class OrderEntryController {
             order.setEatInOrTakeAway(eatInCombo.getValue());
             order.setStatus("Open");
             order.setTotal(orderItemService.getTotalByOrder(order));
+            order.setOpenedAt(LocalDateTime.now());
             orderService.saveOrder(order);
             createOrderStations();
+
+            //Reset so another order can be made
+            order = new Order();
+            currentOrderVbox.getChildren().clear();
+            tableNameField.clear();
+            eatInCombo.setValue(null);
+            totalLabel.setText("£0.00");
+            modificationsVbox.getChildren().clear();
+            selectedItemLabel.setText("No item selected");
         }
     }
 
