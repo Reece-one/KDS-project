@@ -6,8 +6,11 @@ import com.restaurant.KDS.entity.OrderStation;
 import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,11 +22,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -57,6 +62,7 @@ public class ExpoStationController {
     @FXML
     public void createOrderCard (Order order) {
         VBox containerVbox = new VBox();
+        containerVbox.setUserData(order);
 
         //Creates the header for the order card
         HBox headerHbox = new HBox();
@@ -114,8 +120,26 @@ public class ExpoStationController {
     }
 
     @FXML
+    //Sorts orders by recalled first, opened at time second
+    public void sortOrders() {
+        List<Node> sorted = new ArrayList<>(mainFlowPane.getChildren());
+        mainFlowPane.getChildren().sort((a, b) -> {
+            Order orderA = (Order) a.getUserData();
+            Order orderB = (Order) b.getUserData();
+
+            boolean aRecalled = orderA.getStatus().equals("Recalled");
+            boolean bRecalled = orderB.getStatus().equals("Recalled");
+
+            if (aRecalled && !bRecalled) return -1;
+            if (!aRecalled && bRecalled) return 1;
+            return orderA.getOpenedAt().compareTo(orderB.getOpenedAt());
+        });
+        mainFlowPane.getChildren().setAll(sorted);
+    }
+
+    @FXML
     public void onRecall() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecallView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExpoRecallView.fxml"));
         loader.setControllerFactory(springContext::getBean);
         Parent root = loader.load();
 
@@ -130,6 +154,16 @@ public class ExpoStationController {
     @FXML
     public void initialize() {
         populateOpenOrders();
-        orderAmountLabel.setText(String.valueOf(orderService.findByStatus("Open").size()));
+        sortOrders();
+        orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));
+        //Automatically refreshes the screen
+        Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+            populateOpenOrders();
+            sortOrders();
+            orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));
+        }));
+        refresh.setCycleCount(Timeline.INDEFINITE);
+        refresh.play();
     }
+
 }

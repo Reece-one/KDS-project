@@ -17,6 +17,8 @@ public class OrderStation {
 
     private boolean completed = false;
 
+    private boolean recalled = false;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -28,4 +30,7 @@ public class OrderStation {
 
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
+
+    public boolean isRecalled() { return recalled; }
+    public void setRecalled(boolean recalled) { this.recalled = recalled; }
 }

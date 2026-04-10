@@ -28,4 +28,9 @@ public class OrderService {
     public List<Order> findByStatus(String status) {
         return orderRepository.findByStatus(status);
     }
+
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
 }

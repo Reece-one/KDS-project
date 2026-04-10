@@ -42,4 +42,11 @@ public class OrderStationService {
             orderStationRepository.save(record);
         });
     }
+
+    public List<Order> findCompletedOrdersByStation(Station station) {
+        return orderStationRepository.findByStationAndCompleted(station, true)
+                .stream()
+                .map(OrderStation::getOrder)
+                .toList();
+    }
 }

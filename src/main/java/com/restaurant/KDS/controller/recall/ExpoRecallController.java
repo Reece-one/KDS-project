@@ -2,71 +2,40 @@ package com.restaurant.KDS.controller.recall;
 
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
-import com.restaurant.KDS.entity.OrderStation;
-import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.OrderService;
-import com.restaurant.KDS.service.OrderStationService;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Scope("prototype")
-public class RecallController {
+public class ExpoRecallController {
 
-    private final OrderStationService orderStationService;
     @FXML
     private VBox recallVbox;
 
 
     private final OrderService orderService;
-    private Station station;
 
-    public RecallController(OrderService orderService, OrderStationService orderStationService) {
+    public ExpoRecallController(OrderService orderService) {
         this.orderService = orderService;
-        this.orderStationService = orderStationService;
-    }
-
-
-
-    @FXML
-    //Gets only orders that have at least one item that corresponds to the current station
-    public List<Order> completeOrdersByStation() {
-        return orderService.findByStatus("Complete").stream()
-                .filter(orders -> orders.getOrderItems().stream()
-                        .anyMatch(orderItems -> orderItems.getMenuItem().getStations().stream()
-                                .anyMatch(s -> s.getId().equals(station.getId()))))
-                .toList();
-    }
-
-    //Gets only the order items that correspond to the station
-    public List<OrderItem> completeOrderItemsByOrder(Order order) {
-        return order.getOrderItems().stream()
-                .filter(orderItem -> orderItem.getMenuItem().getStations().stream()
-                        .anyMatch(s -> s.getId().equals(station.getId())))
-                .toList();
     }
 
     @FXML
-    public void setStation(Station station) {
-        this.station = station;
-
-        for (Order order : orderStationService.findCompletedOrdersByStation(station)) {
-            List<OrderItem> orderItems = completeOrderItemsByOrder(order);
+    public void initialize() {
+        List<Order> completeOrders = orderService.findByStatus("Complete");
+        for (Order order : completeOrders) {
             HBox orderCard = new HBox();
             Label id = new Label(order.getId().toString());
             Label name = new Label(order.getTableOrName());
             Label time = new Label(order.getOpenedAt().format(java.time.format.DateTimeFormatter.ofPattern("hh:mma")));
-            Label preview = new Label(orderItems.getFirst().getMenuItem().getName());
+            Label preview = new Label(order.getOrderItems().stream().findFirst().get().getMenuItem().getName());
             CheckBox select = new CheckBox();
             select.setUserData(order);
 
@@ -78,7 +47,7 @@ public class RecallController {
             itemVbox.setVisible(false);
             itemVbox.setManaged(false);
 
-            for (OrderItem orderItem : orderItems) {
+            for (OrderItem orderItem : order.getOrderItems()) {
                 HBox nameQuantityHbox = new HBox();
                 Label quantityText = new Label(orderItem.getQuantity().toString());
                 Label nameText = new Label(orderItem.getMenuItem().getName());
@@ -105,10 +74,6 @@ public class RecallController {
     }
 
     @FXML
-    public void initialize() {
-    }
-
-    @FXML
     public void onRecall() {
         //Get the checked orders from the checkbox data
         List<Order> selectedOrders = new ArrayList<>();
@@ -120,17 +85,13 @@ public class RecallController {
                     }
             }
         }
-        //Set orderStation completed to false
+        //Set all selected orders to "Recalled"
         for (Order order : selectedOrders) {
-            orderStationService.findByOrderAndStation(order, station).ifPresent(orderStation -> {
-                orderStation.setCompleted(false);
-                orderStation.setRecalled(true);
-                orderStationService.save(orderStation);
-            });
+            order.setStatus("Recalled");
             orderService.saveOrder(order);
         }
         recallVbox.getChildren().clear();
-        setStation(station);
+        initialize();
     }
 
     @FXML
