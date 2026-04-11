@@ -1,0 +1,130 @@
+package com.restaurant.KDS.controller.abstractClasses;
+
+import com.restaurant.KDS.entity.Order;
+import com.restaurant.KDS.entity.OrderItem;
+import com.restaurant.KDS.entity.Station;
+import com.restaurant.KDS.service.OrderService;
+import com.restaurant.KDS.service.OrderStationService;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public abstract class BaseStationController {
+
+    protected final OrderService orderService;
+    protected final OrderStationService orderStationService;
+    protected final ConfigurableApplicationContext springContext;
+
+
+    @FXML
+    protected FlowPane mainFlowPane;
+
+    @FXML
+    protected Label orderAmountLabel;
+
+    protected BaseStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
+        this.orderService = orderService;
+        this.orderStationService = orderStationService;
+        this.springContext = springContext;
+    }
+
+    public abstract List<Order> getOrders();
+
+    public abstract void onCardClick(Order order, VBox container);
+
+    public abstract List<OrderItem> getOrderItems(Order order);
+
+    public abstract Comparator<Node> getOrderCardComparator();
+
+    public void createOrderCard(Order order) {
+        VBox containerVbox = new VBox();
+        containerVbox.setUserData(order);
+
+        //Creates the header for the order card
+        HBox headerHbox = new HBox();
+        headerHbox.setOnMouseClicked((event) -> {
+            onCardClick(order,  containerVbox);
+        });
+
+        //Sets the order icon depending on eat out or takeaway
+        ImageView inOrOutIcon = new ImageView();
+        if (order.getEatInOrTakeAway().equals("Eat In")) {
+            inOrOutIcon.setImage(new Image(getClass().getResourceAsStream("/images/chair.png")));
+        } else {
+            inOrOutIcon.setImage(new Image(getClass().getResourceAsStream("/images/food-package.png")));
+        }
+        inOrOutIcon.setFitHeight(20);
+        inOrOutIcon.setFitWidth(20);
+        inOrOutIcon.setPreserveRatio(true);
+        Label titleLabel = new Label(order.getTableOrName());
+        headerHbox.getChildren().addAll(inOrOutIcon, titleLabel);
+        containerVbox.getChildren().add(headerHbox);
+
+
+        List<OrderItem> orderItems = getOrderItems(order);
+
+        //Creates the main content of the order card (The order items and modifications)
+        VBox mainContentVbox = new VBox();
+        for (OrderItem orderItem : orderItems) {
+            VBox itemVbox = new VBox();
+            HBox nameQuanitityHbox = new HBox();
+            Label quantityText = new Label(orderItem.getQuantity().toString());
+            Label nameText = new Label(orderItem.getMenuItem().getName());
+            nameQuanitityHbox.getChildren().addAll(quantityText, nameText);
+            itemVbox.getChildren().add(nameQuanitityHbox);
+            if (orderItem.getModifications() != null && !orderItem.getModifications().isEmpty()) {
+                String[] modifications = orderItem.getModifications().split(", ");
+                for (String modification : modifications) {
+                    Label modificationText = new Label(modification);
+                    itemVbox.getChildren().add(modificationText);
+                }
+            }
+            mainContentVbox.getChildren().add(itemVbox);
+        }
+        containerVbox.getChildren().add(mainContentVbox);
+        mainFlowPane.getChildren().add(containerVbox);
+    }
+
+    public void populateOpenOrders() {
+        mainFlowPane.getChildren().clear();
+        List<Order> openOrders = getOrders();
+        for (Order order : openOrders) {
+            createOrderCard(order);
+        }
+    }
+
+    public void sortOrders() {
+        List<Node> sorted = new ArrayList<>(mainFlowPane.getChildren());
+        sorted.sort(getOrderCardComparator());
+        mainFlowPane.getChildren().setAll(sorted);
+    }
+
+    public void refresh() {
+        populateOpenOrders();
+        sortOrders();
+        orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));
+        //Automatically refreshes the screen
+        Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+            populateOpenOrders();
+            sortOrders();
+            orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));
+        }));
+        refresh.setCycleCount(Timeline.INDEFINITE);
+        refresh.play();
+    }
+
+}
