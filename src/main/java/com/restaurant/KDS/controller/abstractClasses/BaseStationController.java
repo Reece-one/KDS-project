@@ -2,7 +2,6 @@ package com.restaurant.KDS.controller.abstractClasses;
 
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
-import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
 import javafx.animation.KeyFrame;
@@ -10,15 +9,16 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -35,6 +35,11 @@ public abstract class BaseStationController {
 
     @FXML
     protected Label orderAmountLabel;
+
+    @FXML
+    protected ProgressBar analyticsBar;
+
+    protected int onTime, completeOrders;
 
     protected BaseStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
         this.orderService = orderService;
@@ -58,6 +63,11 @@ public abstract class BaseStationController {
         HBox headerHbox = new HBox();
         headerHbox.setOnMouseClicked((event) -> {
             onCardClick(order,  containerVbox);
+            if (java.time.Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMinutes() < 1) {
+                onTime++;
+            }
+            completeOrders++;
+            getAnalytics();
         });
 
         //Sets the order icon depending on eat out or takeaway
@@ -113,7 +123,15 @@ public abstract class BaseStationController {
         mainFlowPane.getChildren().setAll(sorted);
     }
 
+
+    public void getAnalytics() {
+        double ratio = completeOrders == 0 ? 0.0 : (double) onTime / completeOrders;
+        analyticsBar.setProgress(ratio);
+    }
+
     public void refresh() {
+        onTime = 0;
+        completeOrders = 0;
         populateOpenOrders();
         sortOrders();
         orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));

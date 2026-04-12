@@ -18,6 +18,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -37,6 +38,11 @@ public class ExpoStationController extends  BaseStationController {
     @Override
     public void onCardClick(Order order, VBox container) {
         completeOrder(order);
+        if (Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMinutes() < 1) {
+            onTime ++;
+        }
+        completeOrders ++;
+        getAnalytics();
         container.getChildren().clear();
         ((Pane) container.getParent()).getChildren().remove(container);
     }
