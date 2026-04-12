@@ -6,13 +6,17 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="100" minWidth="100" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.menuItem.MenuItemConfigController">
+<BorderPane minHeight="100" minWidth="100" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.menuItem.MenuItemConfigController">
    <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="50.0" style="-fx-padding: 10 20 10 20; -fx-background-color: #433a3f;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Label" />
-            <Button mnemonicParsing="false" onAction="#onAddMenuItem" text="Button" />
+            <Label style="-fx-font-size: 24; -fx-text-fill: white;" styleClass="titleLabel" text="Menu Items" />
+            <Button minWidth="40" mnemonicParsing="false" onAction="#onAddMenuItem" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 24; -fx-padding: 0; -fx-text-fill: white;" text="+">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
          </children>
       </HBox>
    </top>

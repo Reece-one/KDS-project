@@ -83,6 +83,7 @@ public class AddMenuItemController {
                 list.remove(item);
                 flowPane.getChildren().remove(button); //Clicking the button removes the item from the list
             });
+            button.getStyleClass().add("tag-button");
             flowPane.getChildren().add(button);
         }
     }
@@ -123,7 +124,8 @@ public class AddMenuItemController {
         menuItem.setIngredients(ingredients);
         menuItem.setAllergens(allergens);
 
-        List<Station> selectedStations = new ArrayList<>(); //Gets the selected stations
+        //Gets the selected stations
+        List<Station> selectedStations = new ArrayList<>();
         for (var node : stationFlowPane.getChildren()) {
             CheckBox cb = (CheckBox) node;
             if (cb.isSelected()) {

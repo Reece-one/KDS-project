@@ -90,6 +90,7 @@ public class EditMenuItemController {
                 list.remove(item);
                 flowPane.getChildren().remove(button);
             });
+            button.getStyleClass().add("tag-button");
             flowPane.getChildren().add(button);
         }
     }

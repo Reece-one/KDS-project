@@ -4,40 +4,109 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.menuItem.AddMenuItemController">
-   <children>
-      <Label text="Create a new menu item" />
-      <TextField fx:id="nameTextField" promptText="Name">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </TextField>
-      <TextField fx:id="priceTextField" promptText="Price(£)" />
-      <TextField fx:id="categoryTextField" promptText="Category" />
-      <HBox prefHeight="33.0" prefWidth="600.0">
+<ScrollPane hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.menuItem.AddMenuItemController">
+   <content>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="600.0" spacing="10.0" stylesheets="@../css/styles.css">
          <children>
-            <TextField fx:id="ingredientTextField" promptText="Ingredients" />
-            <Button mnemonicParsing="false" onAction="#addIngredient" text="Add" />
+            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="107.0" prefWidth="600.0" styleClass="titleLabel" text="Create a new menu item">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <TextField fx:id="nameTextField" promptText="Name">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="priceTextField" promptText="Price(£)">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="categoryTextField" promptText="Category">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </TextField>
+            <HBox prefHeight="33.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="ingredientTextField" promptText="Ingredients">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button mnemonicParsing="false" onAction="#addIngredient" text="Add" />
+               </children>
+            </HBox>
+            <FlowPane fx:id="ingredientsFlowPane" hgap="10.0" prefHeight="32.0" prefWidth="600.0" vgap="10.0">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </FlowPane>
+            <HBox prefHeight="33.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="allergenTextField" promptText="Allergens">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button mnemonicParsing="false" onAction="#addAllergen" text="Add" />
+               </children>
+            </HBox>
+            <FlowPane fx:id="allergensFlowPane" hgap="10.0" prefHeight="31.0" prefWidth="600.0" vgap="10.0">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </FlowPane>
+            <Label text="Stations">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Label>
+            <FlowPane fx:id="stationFlowPane" hgap="10.0" prefHeight="31.0" prefWidth="600.0" vgap="10.0">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </FlowPane>
+            <CheckBox fx:id="availableCheckBox" mnemonicParsing="false" text="Available?">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </CheckBox>
+            <TextField fx:id="timeTextField" promptText="Prep Time (Minutes)">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </TextField>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="600.0">
+               <children>
+                  <Button mnemonicParsing="false" styleClass="secondary-button" text="Cancel">
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onSubmit" text="Create">
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
-      </HBox>
-      <FlowPane fx:id="ingredientsFlowPane" prefHeight="32.0" prefWidth="600.0" />
-      <HBox prefHeight="33.0" prefWidth="600.0">
-         <children>
-            <TextField fx:id="allergenTextField" promptText="Allergens" />
-            <Button mnemonicParsing="false" onAction="#addAllergen" text="Add" />
-         </children>
-      </HBox>
-      <FlowPane fx:id="allergensFlowPane" prefHeight="31.0" prefWidth="600.0" />
-      <Label text="Stations" />
-      <FlowPane fx:id="stationFlowPane" prefHeight="31.0" prefWidth="600.0" />
-      <CheckBox fx:id="availableCheckBox" mnemonicParsing="false" text="Available?" />
-      <TextField fx:id="timeTextField" promptText="Prep Time (Minutes)" />
-      <Button mnemonicParsing="false" onAction="#onSubmit" text="Create" />
-   </children>
-</VBox>
+      </VBox>
+   </content>
+</ScrollPane>
