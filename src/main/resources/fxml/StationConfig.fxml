@@ -5,19 +5,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 
-<BorderPane minHeight="100" minWidth="100" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.station.StationConfigController">
+<BorderPane minHeight="100" minWidth="100" prefHeight="400.0" prefWidth="600.0" stylesheets="@/css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.station.StationConfigController">
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" style="-fx-padding: 10 20 10 20; -fx-background-color: #433a3f;" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-font-size: 36;" text="Stations" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button minWidth="40" mnemonicParsing="false" onAction="#onAddStation" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 36; -fx-padding: 0;" text="+" />
+            <Label style="-fx-font-size: 36; -fx-text-fill: white;" text="Stations" />
+            <Button minWidth="40" mnemonicParsing="false" onAction="#onAddStation" prefHeight="56.0" prefWidth="55.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 36; -fx-padding: 0;" text="+" />
          </children>
       </HBox>
    </top>
    <center>
-      <FlowPane fx:id="stationFlowPane" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <FlowPane fx:id="stationFlowPane" hgap="10" vgap="10" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

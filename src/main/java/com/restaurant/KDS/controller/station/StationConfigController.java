@@ -34,6 +34,7 @@ public class StationConfigController {
 
         for (Station station : stations) {
             Button button = new Button(station.getName());
+            button.getStyleClass().add("station-button");
             button.setOnAction(event -> openStationModal(station));
             stationFlowPane.getChildren().add(button);
         }

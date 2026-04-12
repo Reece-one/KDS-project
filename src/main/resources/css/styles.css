@@ -1,0 +1,157 @@
+/* KDS Colour Palette */
+/* Graphite:    #433a3f - background */
+/* Blue Slate:  #3d5a6c - cards, inputs, buttons */
+/* Muted Teal:  #72a98f - hover, secondary text */
+/* Light Green: #8de969 - on-time, progress bar */
+/* Lemon Lime:  #cbef43 - primary text */
+
+/* Root background */
+.root {
+    -fx-background-color: #f5f5f5;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #3d5a6c;
+}
+
+.label.title {
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+    -fx-background-color: #433a3f;
+}
+
+.titleLabel {
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+    -fx-background-color: #433a3f;
+}
+
+/* Description labels (smaller sub-text) */
+.label.description {
+    -fx-text-fill: #72a98f;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #3d5a6c;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+}
+
+.button:pressed {
+    -fx-background-color: #72a98f;
+    -fx-text-fill: #433a3f;
+}
+
+.button.addStation {
+    -fx-background-color: #433a3f;
+    -fx-background-radius: 0;
+    -fx-text-fill: white;
+}
+
+.station-button {
+    -fx-background-color: white;
+    -fx-text-fill: #433a3f;
+    -fx-font-size: 32px;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 40 60;
+    -fx-border-color: transparent transparent #3d5a6c transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-text-fill: #72a98f;
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: #f5f5f5;
+    -fx-text-fill: #433a3f;
+    -fx-prompt-text-fill: #72a98f;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 16px;
+}
+
+/* Check boxes */
+.check-box .text {
+    -fx-text-fill: #cbef43;
+}
+
+.check-box .box {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #8de969;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #433a3f;
+}
+
+/* Slider */
+.slider .track {
+}
+
+.slider .thumb {
+    -fx-background-color: #8de969;
+}
+
+/* Progress bar */
+.progress-bar .track {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 10;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #8de969;
+    -fx-background-radius: 10;
+}
+
+/* Scroll pane */
+.scroll-pane {
+
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #f5f5f5;
+}
+
+.scroll-pane .scroll-bar .track {
+    -fx-background-color: #3d5a6c;
+}
+
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: #72a98f;
+}
+
+/* Flow pane */
+.my-flow-pane {
+    -fx-background-color: #f5f5f5;
+}
+
+/* Setting row dividers */
+.setting-row {
+    -fx-border-color: transparent transparent #3d5a6c transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: white;
+    -fx-padding: 10 10 10 10;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}

@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.station.AddStationController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="346.0" spacing="10.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.station.AddStationController">
    <children>
-      <Label text="Create a new station" />
-      <TextField fx:id="nameTextField" promptText="Name" />
-      <Button mnemonicParsing="false" onAction="#onSubmit" text="Submit" />
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="35.0" styleClass="title" text="Create a new station">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <TextField fx:id="nameTextField" promptText="Name">
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin></TextField>
+      <HBox alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="346.0">
+         <children>
+            <Button mnemonicParsing="false" styleClass="secondary-button" text="Cancel">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onSubmit" text="Submit">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </VBox>
