@@ -83,7 +83,7 @@ public class AddMenuItemController {
                 list.remove(item);
                 flowPane.getChildren().remove(button); //Clicking the button removes the item from the list
             });
-            button.getStyleClass().add("tag-button");
+            button.getStyleClass().add("tertiary-button");
             flowPane.getChildren().add(button);
         }
     }

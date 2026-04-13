@@ -124,6 +124,9 @@ public class EditOrderItemController {
                 addModification("No ", ingredient);
             });
 
+            hBox.getStyleClass().add("order-entry-modifications");
+
+
             hBox.getChildren().addAll(name, extra, remove);
             modificationsVbox.getChildren().add(hBox);
         }

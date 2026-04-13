@@ -111,8 +111,6 @@ public class OrderEntryController {
         }
     }
 
-
-
     public void populateIngredients(MenuItem menuItem) {
         selectedItemLabel.setText(menuItem.getName());
 
@@ -130,6 +128,7 @@ public class OrderEntryController {
             remove.setOnAction(extraEvent -> {
                 addModification("No ", ingredient);
             });
+            hBox.getStyleClass().add("order-entry-modifications");
 
             hBox.getChildren().addAll(name, extra, remove);
             modificationsVbox.getChildren().add(hBox);
@@ -148,6 +147,7 @@ public class OrderEntryController {
                 menuItem = item;
                 populateIngredients(item);
             });
+            button.getStyleClass().addAll("quaternary-button", "menu-item-card-button");
             menuItemsByCategory.getChildren().add(button);
         }
     }
@@ -161,6 +161,7 @@ public class OrderEntryController {
             button.setOnAction(event -> {
                 showByCategory(category);
             });
+            button.getStyleClass().add("tertiary-button");
             categoryHbox.getChildren().add(button);
         }
     }
@@ -189,7 +190,7 @@ public class OrderEntryController {
             VBox vbox = new VBox();
             Label name = new Label(item.getMenuItem().getName());
             Label modification = new Label(item.getModifications());
-            Label quantity = new Label("X" + item.getQuantity().toString());
+            Label quantity = new Label("X " + item.getQuantity().toString());
             vbox.getChildren().addAll(name, modification, quantity);
             vbox.setOnMouseClicked(event -> {
                 try {

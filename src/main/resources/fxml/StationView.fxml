@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="784.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.station.MainStationController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="841.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.station.MainStationController">
    <bottom>
       <HBox prefHeight="53.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -45,7 +45,7 @@
       </HBox>
    </bottom>
    <center>
-      <ScrollPane fitToHeight="true" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+      <ScrollPane fitToHeight="true" prefHeight="493.0" prefWidth="831.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
             <FlowPane fx:id="mainFlowPane" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" />
          </content>

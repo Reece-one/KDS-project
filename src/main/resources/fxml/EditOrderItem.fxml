@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="300.0" prefWidth="353.0" spacing="10" style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.orderEntry.EditOrderItemController">
+<VBox prefHeight="565.0" prefWidth="353.0" spacing="10" style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.orderEntry.EditOrderItemController">
    <padding>
       <Insets bottom="10" left="10" right="10" top="10" />
    </padding>
@@ -18,7 +18,7 @@
       <Label style="-fx-font-size: 16; -fx-font-weight: bold;" text="Edit Item" />
       <Label fx:id="selectedItemLabel" style="-fx-font-style: italic;" text="No item selected" />
       <Separator />
-      <HBox spacing="5">
+      <HBox alignment="CENTER_LEFT" spacing="5">
          <children>
             <TextField fx:id="modificationTextField" promptText="Add extras" HBox.hgrow="ALWAYS" />
             <Button onAction="#addExtra" text="+" />

@@ -13,6 +13,7 @@
 /* Labels */
 .label {
     -fx-text-fill: #3d5a6c;
+    -fx-font-size: 18px;
 }
 
 .label.title {
@@ -25,6 +26,10 @@
     -fx-font-size: 24px;
     -fx-text-fill: white;
     -fx-background-color: #433a3f;
+}
+
+.order-entry-modifications-label {
+    -fx-font-size: 18px;
 }
 
 /* Description labels (smaller sub-text) */
@@ -74,12 +79,24 @@
     -fx-text-fill: #72a98f;
 }
 
-.tag-button {
+.tertiary-button {
     -fx-background-color: #8de969;
     -fx-text-fill: black;
     -fx-background-radius: 10;
     -fx-cursor: hand;
     -fx-font-size: 18px;
+}
+
+.quaternary-button {
+    -fx-background-color: #cbef43;
+    -fx-text-fill: black;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+}
+
+.menu-item-card-button {
+    -fx-padding: 30 50;
 }
 
 /* Text fields */
@@ -156,6 +173,13 @@
     -fx-background-color: #f5f5f5;
 }
 
+/* HBox */
+.order-entry-modifications {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
 /* Setting row dividers */
 .setting-row {
     -fx-border-color: transparent transparent #3d5a6c transparent;
@@ -199,4 +223,78 @@
 /* Empty rows */
 .table-view .table-row-cell:empty {
     -fx-background-color: #f5f5f5;
+}
+
+/* Spinner */
+.spinner {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 18px;
+}
+
+.spinner .text-field {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: transparent;
+    -fx-background-radius: 10 0 0 10;
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: #3d5a6c;
+    -fx-background-radius: 0 10 0 0;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-color: #3d5a6c;
+    -fx-background-radius: 0 0 10 0;
+}
+
+.spinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: white;
+}
+
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: white;
+}
+
+.spinner .increment-arrow-button:pressed {
+    -fx-background-color: #72a98f;
+}
+
+.spinner .decrement-arrow-button:pressed {
+    -fx-background-color: #72a98f;
+}
+
+/* Combo box */
+.combo-box {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 16px;
+}
+
+/* The arrow button */
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #3d5a6c;
+}
+
+/* The dropdown list */
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+}
+
+.combo-box-popup .list-cell {
+    -fx-text-fill: #433a3f;
+    -fx-font-size: 14px;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #3d5a6c;
 }

@@ -12,27 +12,28 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="768" prefWidth="1024" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.orderEntry.OrderEntryController">
-
-    <top>
-        <HBox alignment="CENTER_LEFT" style="-fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;">
-            <padding>
-                <Insets bottom="5" left="10" right="10" top="5" />
-            </padding>
-            <Button style="-fx-background-color: transparent; -fx-font-size: 14;" text="Back" />
-        </HBox>
-    </top>
+<BorderPane fx:id="borderPane" prefHeight="768" prefWidth="1024" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.orderEntry.OrderEntryController">
 
     <!-- CENTER: Menu items for selected category -->
     <center>
-        <ScrollPane fitToWidth="true">
+        <ScrollPane fitToWidth="true" prefHeight="768.0" prefWidth="585.0">
          <content>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <HBox fx:id="categoryHbox" prefHeight="100.0" prefWidth="200.0" />
-                  <Separator prefWidth="200.0" />
-                  <FlowPane fx:id="menuItemsByCategory" prefHeight="200.0" prefWidth="200.0" />
+                  <HBox fx:id="categoryHbox" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding></HBox>
+                  <Separator prefWidth="200.0" stylesheets="@../css/styles.css" />
+                  <FlowPane fx:id="menuItemsByCategory" hgap="10.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding></FlowPane>
                </children>
             </VBox>
          </content>
@@ -44,7 +45,7 @@
         <HBox BorderPane.alignment="CENTER">
 
             <!-- Modifications column -->
-            <VBox prefWidth="200" spacing="10" style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;">
+            <VBox prefHeight="768.0" prefWidth="211.0" spacing="10" style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;">
                 <padding>
                     <Insets bottom="10" left="10" right="10" top="10" />
                 </padding>
@@ -52,20 +53,23 @@
                 <Label fx:id="selectedItemLabel" style="-fx-font-style: italic;" text="No item selected" />
                 <Separator />
                 <HBox spacing="5">
-                    <TextField fx:id="modificationTextField" promptText="Add extras" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="modificationTextField" prefHeight="42.0" prefWidth="121.0" promptText="Add extras" HBox.hgrow="ALWAYS" />
                     <Button onAction="#addExtra" text="+" />
                 </HBox>
-                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToWidth="true" prefHeight="505.0" prefWidth="215.0" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox fx:id="modificationsVbox" prefHeight="200.0" prefWidth="100.0" />
+                  <VBox fx:id="modificationsVbox" alignment="CENTER" prefHeight="23.0" prefWidth="187.0" />
                </content>
                 </ScrollPane>
                 <Separator />
                 <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label text="Qty:" />
+                    <Label text="Qty:">
+                  <font>
+                     <Font size="18.0" />
+                  </font></Label>
                     <Spinner fx:id="quantitySpinner" prefWidth="80" />
                 </HBox>
-                <Button maxWidth="Infinity" onAction="#addToOrder" style="-fx-base: #2196F3;" text="Add to Order" />
+                <Button maxWidth="Infinity" onAction="#addToOrder" text="Add to Order" />
             </VBox>
 
             <!-- Order summary column -->
@@ -73,10 +77,10 @@
                 <padding>
                     <Insets bottom="10" left="10" right="10" top="10" />
                 </padding>
-                <HBox alignment="CENTER_LEFT" spacing="10">
+                <VBox alignment="CENTER" spacing="10">
                     <TextField fx:id="tableNameField" promptText="Table / Name" HBox.hgrow="ALWAYS" />
                     <ComboBox fx:id="eatInCombo" promptText="Eat In / Takeaway" />
-                </HBox>
+                </VBox>
                 <Separator />
                 <Label style="-fx-font-size: 16; -fx-font-weight: bold;" text="Current Order" />
                 <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
@@ -88,8 +92,8 @@
                     <Label fx:id="totalLabel" style="-fx-font-size: 18; -fx-font-weight: bold;" text="£0.00" />
                 </HBox>
                 <HBox alignment="CENTER" spacing="10">
-                    <Button fx:id="clearButton" maxWidth="Infinity" onAction="#onClear" text="Clear" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="submitButton" maxWidth="Infinity" onAction="#onSubmit" style="-fx-base: #4CAF50;" text="Submit Order" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="clearButton" maxWidth="Infinity" onAction="#onClear" styleClass="secondary-button" text="Clear" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="submitButton" maxWidth="Infinity" onAction="#onSubmit" text="Submit" HBox.hgrow="ALWAYS" />
                 </HBox>
             </VBox>
 
