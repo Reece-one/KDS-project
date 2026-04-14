@@ -2,12 +2,14 @@ package com.restaurant.KDS.controller.station;
 
 import com.restaurant.KDS.controller.abstractClasses.BaseStationController;
 import com.restaurant.KDS.controller.recall.RecallController;
+import com.restaurant.KDS.controller.settings.SettingsController;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
 import com.restaurant.KDS.entity.OrderStation;
 import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
+import com.restaurant.KDS.util.ViewHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -84,6 +86,11 @@ public class MainStationController extends BaseStationController {
         };
     }
 
+    @Override
+    public Long getStationId() {
+        return station != null ? station.getId() : null;
+    }
+
     public void setStation(Station station) {
         this.station = station;
         refresh();
@@ -104,6 +111,20 @@ public class MainStationController extends BaseStationController {
         modal.initOwner(mainFlowPane.getScene().getWindow());
         modal.setScene(new Scene(root));
         modal.showAndWait();
+    }
+
+    @FXML
+    public void onSettings() throws IOException {
+        FXMLLoader loader = new FXMLLoader(ViewHelper.class.getResource("/fxml/SettingsView.fxml"));
+        loader.setControllerFactory(springContext::getBean);
+        Parent root = loader.load();
+
+        SettingsController settingsController = loader.getController();
+        settingsController.setStationScene(mainFlowPane.getScene());
+        settingsController.setStation(station);
+
+        Stage stage = (Stage) mainFlowPane.getScene().getWindow();
+        stage.setScene(new Scene(root));
     }
 
     @FXML

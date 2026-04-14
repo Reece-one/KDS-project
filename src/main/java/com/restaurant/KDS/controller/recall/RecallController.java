@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
+import com.restaurant.KDS.controller.settings.SettingsController;
 
 @Component
 @Scope("prototype")
@@ -101,6 +103,15 @@ public class RecallController {
 
             recallVbox.getChildren().add(orderCard);
             recallVbox.getChildren().add(itemVbox);
+        }
+
+        // Apply saved font size
+        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+        int size = prefs.getInt("fontSize_" + station.getId(), 24);
+        if (size != 24) {
+            recallVbox.lookupAll(".label").forEach(label -> {
+                label.setStyle("-fx-font-size: " + size + "px;");
+            });
         }
     }
 

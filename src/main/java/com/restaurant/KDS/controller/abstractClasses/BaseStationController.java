@@ -21,6 +21,8 @@ import javafx.util.Duration;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.time.LocalDateTime;
+import com.restaurant.KDS.controller.settings.SettingsController;
+import java.util.prefs.Preferences;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -56,6 +58,8 @@ public abstract class BaseStationController {
     public abstract List<OrderItem> getOrderItems(Order order);
 
     public abstract Comparator<Node> getOrderCardComparator();
+
+    public abstract Long getStationId();
 
     public void createOrderCard(Order order) {
         VBox containerVbox = new VBox();
@@ -95,7 +99,6 @@ public abstract class BaseStationController {
         HBox.setHgrow(spacer, Priority.ALWAYS);
         headerHbox.getChildren().addAll(inOrOutIcon, spacer, titleLabel);
         containerVbox.getChildren().add(headerHbox);
-
 
         List<OrderItem> orderItems = getOrderItems(order);
 
@@ -143,6 +146,21 @@ public abstract class BaseStationController {
         List<Order> openOrders = getOrders();
         for (Order order : openOrders) {
             createOrderCard(order);
+        }
+        applyFontSize();
+    }
+
+    private void applyFontSize() {
+        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+        Long stationId = getStationId();
+        if (stationId == null) return;
+        int size = prefs.getInt("fontSize_" + stationId, 18);
+        if (size != 18) {
+            mainFlowPane.lookupAll(".order-card-container").forEach(container -> {
+                container.lookupAll(".label").forEach(label -> {
+                    label.setStyle("-fx-font-size: " + size + "px;");
+                });
+            });
         }
     }
 

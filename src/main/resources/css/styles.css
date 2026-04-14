@@ -305,7 +305,6 @@
 .order-card-container {
     -fx-background-color: white;
     -fx-pref-width: 300;
-    -fx-font-size: 24px;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
     -fx-border-color: transparent transparent #3d5a6c transparent;
@@ -326,7 +325,6 @@
 }
 
 .order-card-container .label {
-    -fx-font-size: 24px;
     -fx-text-fill: black;
 }
 
@@ -344,7 +342,6 @@
 
 .order-card-container .order-card-modification-text {
     -fx-padding: 0 0 0 39;
-    -fx-font-size: 20px;
     -fx-text-fill: #72a98f;
     -fx-font-style: italic;
 }
@@ -359,5 +356,4 @@
 
 .analytics-node .label {
     -fx-text-fill: white;
-
 }

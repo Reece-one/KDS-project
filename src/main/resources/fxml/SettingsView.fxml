@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="786.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="786.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.settings.SettingsController">
    <top>
       <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="61.0" prefWidth="786.0" style="-fx-background-color: #433a3f;" styleClass="title" text="Settings" BorderPane.alignment="CENTER">
          <font>
@@ -45,12 +45,12 @@
                         </VBox>
                         <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="10.0">
                            <children>
-                              <Label text="14">
+                              <Label fx:id="sliderLabel" text="14">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Slider prefWidth="140.0" />
+                              <Slider fx:id="fontSlider" max="28.0" min="12.0" prefWidth="140.0" value="18.0" />
                            </children>
                         </HBox>
                      </children>
@@ -140,7 +140,7 @@
       </ScrollPane>
    </center>
    <bottom>
-      <Button alignment="CENTER" mnemonicParsing="false" prefHeight="51.0" prefWidth="93.0" text="Button" BorderPane.alignment="CENTER_RIGHT">
+      <Button alignment="CENTER" mnemonicParsing="false" onAction="#onClose" prefHeight="51.0" prefWidth="93.0" text="Close" BorderPane.alignment="CENTER_RIGHT">
          <BorderPane.margin>
             <Insets bottom="30.0" left="10.0" right="50.0" />
          </BorderPane.margin>
