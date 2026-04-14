@@ -14,6 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -57,10 +59,18 @@ public abstract class BaseStationController {
 
     public void createOrderCard(Order order) {
         VBox containerVbox = new VBox();
+        containerVbox.getStyleClass().add("order-card-container");
         containerVbox.setUserData(order);
 
         //Creates the header for the order card
         HBox headerHbox = new HBox();
+        if (orderService.isOnTime(order)) {
+            headerHbox.setStyle("-fx-background-color: #8de969;"); // green
+        } else {
+            headerHbox.setStyle("-fx-background-color: #ff6b6b;"); // red
+        }
+        headerHbox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        headerHbox.getStyleClass().add("order-card-header");
         headerHbox.setOnMouseClicked((event) -> {
             onCardClick(order,  containerVbox);
             if (java.time.Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMinutes() < 1) {
@@ -77,11 +87,13 @@ public abstract class BaseStationController {
         } else {
             inOrOutIcon.setImage(new Image(getClass().getResourceAsStream("/images/food-package.png")));
         }
-        inOrOutIcon.setFitHeight(20);
-        inOrOutIcon.setFitWidth(20);
+        inOrOutIcon.setFitHeight(30);
+        inOrOutIcon.setFitWidth(30);
         inOrOutIcon.setPreserveRatio(true);
         Label titleLabel = new Label(order.getTableOrName());
-        headerHbox.getChildren().addAll(inOrOutIcon, titleLabel);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        headerHbox.getChildren().addAll(inOrOutIcon, spacer, titleLabel);
         containerVbox.getChildren().add(headerHbox);
 
 
@@ -89,22 +101,39 @@ public abstract class BaseStationController {
 
         //Creates the main content of the order card (The order items and modifications)
         VBox mainContentVbox = new VBox();
+        mainContentVbox.getStyleClass().add("order-card-main-content");
+
+        //Creates a timer for every order card
+        java.time.Duration elapsed = java.time.Duration.between(order.getOpenedAt(), java.time.LocalDateTime.now());
+        long hours = elapsed.toHours();
+        long minutes = elapsed.toMinutesPart();
+        long seconds = elapsed.toSecondsPart();
+        Label timeElapsedLabel = new Label(String.valueOf(elapsed));
+        timeElapsedLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+        timeElapsedLabel.getStyleClass().add("timer-label");
+
         for (OrderItem orderItem : orderItems) {
             VBox itemVbox = new VBox();
             HBox nameQuanitityHbox = new HBox();
+            nameQuanitityHbox.getStyleClass().add("order-card-name-quantity");
             Label quantityText = new Label(orderItem.getQuantity().toString());
+            quantityText.getStyleClass().add("order-card-quantity-text");
             Label nameText = new Label(orderItem.getMenuItem().getName());
+            nameText.setWrapText(true);
             nameQuanitityHbox.getChildren().addAll(quantityText, nameText);
             itemVbox.getChildren().add(nameQuanitityHbox);
             if (orderItem.getModifications() != null && !orderItem.getModifications().isEmpty()) {
                 String[] modifications = orderItem.getModifications().split(", ");
                 for (String modification : modifications) {
                     Label modificationText = new Label(modification);
+                    modificationText.getStyleClass().add("order-card-modification-text");
+                    modificationText.setWrapText(true);
                     itemVbox.getChildren().add(modificationText);
                 }
             }
             mainContentVbox.getChildren().add(itemVbox);
         }
+        containerVbox.getChildren().add(timeElapsedLabel);
         containerVbox.getChildren().add(mainContentVbox);
         mainFlowPane.getChildren().add(containerVbox);
     }

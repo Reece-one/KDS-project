@@ -5,6 +5,7 @@ import com.restaurant.KDS.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,12 @@ public class OrderService {
 
     public List<Order> findAll() {
         return orderRepository.findAll();
+    }
+
+    public boolean isOnTime(Order order) {
+        if (order.getOpenedAt() == null) return true;
+        double elapsed = java.time.Duration.between(order.getOpenedAt(), java.time.LocalDateTime.now()).toMillis() / 60000.0;
+        return elapsed <= 1;
     }
 
 }
