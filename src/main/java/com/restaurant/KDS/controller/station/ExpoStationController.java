@@ -4,6 +4,7 @@ import com.restaurant.KDS.controller.abstractClasses.BaseStationController;
 import com.restaurant.KDS.controller.settings.SettingsController;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
+import com.restaurant.KDS.entity.OrderStation;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
 import com.restaurant.KDS.util.ViewHelper;
@@ -20,13 +21,15 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 @Component
-public class ExpoStationController extends  BaseStationController {
+public class ExpoStationController extends BaseStationController {
 
     public ExpoStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
         super(orderService, orderStationService, springContext);
@@ -34,19 +37,16 @@ public class ExpoStationController extends  BaseStationController {
 
     @Override
     public List<Order> getOrders() {
-       return orderService.findByStatus("Open");
+        List<Order> orders = new ArrayList<>();
+        orders.addAll(orderService.findByStatus("Open"));
+        orders.addAll(orderService.findByStatus("Recalled"));
+        return orders;
     }
 
     @Override
     public void onCardClick(Order order, VBox container) {
-        completeOrder(order);
-        if (Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMinutes() < 1) {
-            onTime ++;
-        }
-        completeOrders ++;
-        getAnalytics();
-        container.getChildren().clear();
-        ((Pane) container.getParent()).getChildren().remove(container);
+        completeOrder(order, container);
+
     }
 
     @Override
@@ -76,13 +76,31 @@ public class ExpoStationController extends  BaseStationController {
     }
 
     @FXML
-    public void completeOrder(Order order) {
-        if (orderStationService.allStationsCompleted(order)) {
-            order.setStatus("Complete");
-            order.setCompletedAt(LocalDateTime.now());
-            orderService.saveOrder(order);
+    public void completeOrder(Order order, VBox container) {
+        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+        if (prefs.getBoolean("bump", true)) {
+            if (!orderStationService.allStationsCompleted(order)) return;
+        } else {
+            List<OrderStation> stations = orderStationService.findByOrder(order);
+            for (OrderStation station : stations) {
+                station.setCompleted(true);
+                orderStationService.save(station);
+            }
         }
+
+        order.setStatus("Complete");
+        order.setCompletedAt(LocalDateTime.now());
+        orderService.saveOrder(order);
+
+        if (Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMinutes() < 1) {
+            onTime++;
+        }
+        completeOrders++;
+        getAnalytics();
+        container.getChildren().clear();
+        ((Pane) container.getParent()).getChildren().remove(container);
     }
+
 
     @FXML
     public void onRecall() throws IOException {

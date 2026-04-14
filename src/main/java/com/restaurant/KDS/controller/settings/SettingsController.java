@@ -31,6 +31,11 @@ public class SettingsController {
     @FXML
     private CheckBox darkModeCheckBox;
 
+    @FXML
+    private CheckBox bumpCheckBox;
+
+    private final Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+
 
     public void setStationScene(Scene scene) {
         this.scene = scene;
@@ -42,8 +47,7 @@ public class SettingsController {
 
     public void setStationId(Long stationId) {
         this.stationId = stationId;
-        //Gets saved preferences
-        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+        //Gets saved font preferences
         int saved = prefs.getInt("fontSize_" + stationId, 24);  //Gets the font size preferences based on station id as key
         fontSlider.setValue(saved);
         sliderLabel.setText(String.valueOf(saved));
@@ -60,6 +64,9 @@ public class SettingsController {
                 }
             });
         }
+
+        boolean strictBump = prefs.getBoolean("bump", false);
+        bumpCheckBox.setSelected(strictBump);
     }
 
     public void initialize() {
@@ -74,7 +81,6 @@ public class SettingsController {
 
             //Saves the preferred font size for this station
             if (stationId != null) {
-                Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
                 prefs.putInt("fontSize_" + stationId, value);
             }
 
@@ -88,9 +94,8 @@ public class SettingsController {
             }
         });
 
-
+        //Saves the preference for dark mode
         darkModeCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
-            Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
             String css = newVal ? "/css/dark-styles.css" : "/css/styles.css";
             prefs.putBoolean("darkMode_" + stationId, newVal);
 
@@ -104,6 +109,11 @@ public class SettingsController {
                 settingsScene.getRoot().getStylesheets().add(SettingsController.class.getResource(css).toExternalForm());
             }
         });
+
+        //Saves the preference for Strict Expo Bump
+        bumpCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            prefs.putBoolean("bump", newVal);
+        });
     }
 
     @FXML
@@ -111,6 +121,5 @@ public class SettingsController {
         Stage stage = (Stage) fontSlider.getScene().getWindow();
         stage.setScene(scene);
     }
-
 
 }

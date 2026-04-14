@@ -94,12 +94,12 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label style="-fx-text-fill: #72a98f;" text="Toggle whether expo requires all stations to be complete before bumping" />
+                              <Label prefHeight="27.0" prefWidth="923.0" style="-fx-text-fill: #72a98f;" text="Toggle whether expo requires all stations to be complete before bumping" />
                            </children>
                         </VBox>
                         <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
                            <children>
-                              <CheckBox mnemonicParsing="false">
+                              <CheckBox fx:id="bumpCheckBox" mnemonicParsing="false">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
