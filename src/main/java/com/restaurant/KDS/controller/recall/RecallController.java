@@ -80,7 +80,7 @@ public class RecallController {
 
             for (OrderItem orderItem : orderItems) {
                 HBox nameQuantityHbox = new HBox();
-                Label quantityText = new Label(orderItem.getQuantity().toString());
+                Label quantityText = new Label(orderItem.getQuantity().toString() + " ");
                 Label nameText = new Label(orderItem.getMenuItem().getName());
                 nameQuantityHbox.getChildren().addAll(quantityText, nameText);
                 itemVbox.getChildren().add(nameQuantityHbox);

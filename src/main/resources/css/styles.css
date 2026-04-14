@@ -1,9 +1,9 @@
 /* KDS Colour Palette */
-/* Graphite:    #433a3f - background */
-/* Blue Slate:  #3d5a6c - cards, inputs, buttons */
-/* Muted Teal:  #72a98f - hover, secondary text */
-/* Light Green: #8de969 - on-time, progress bar */
-/* Lemon Lime:  #cbef43 - primary text */
+/* Graphite:    #433a3f
+/* Blue Slate:  #3d5a6c
+/* Muted Teal:  #72a98f
+/* Light Green: #8de969
+/* Lemon Lime:  #cbef43
 
 /* Root background */
 .root {
@@ -168,6 +168,8 @@
     -fx-background-color: #72a98f;
 }
 
+
+
 /* Flow pane */
 .my-flow-pane {
     -fx-background-color: #f5f5f5;
@@ -197,7 +199,7 @@
 
 .table-view .column-header .label {
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
 }
 
 /* Table rows */
@@ -212,7 +214,7 @@
 /* Cell text */
 .table-view .table-cell {
     -fx-text-fill: #433a3f;
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
 }
 
 /* Remove header line between columns */
@@ -311,6 +313,7 @@
 
 .order-card-main-content {
     -fx-padding: 5 10;
+    -fx-spacing: 5;
 }
 
 .order-card-header {
