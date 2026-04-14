@@ -2,8 +2,10 @@ package com.restaurant.KDS.controller.settings;
 
 import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.util.ViewHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
@@ -26,6 +28,10 @@ public class SettingsController {
     @FXML
     private Scene scene;
 
+    @FXML
+    private CheckBox darkModeCheckBox;
+
+
     public void setStationScene(Scene scene) {
         this.scene = scene;
     }
@@ -36,10 +42,24 @@ public class SettingsController {
 
     public void setStationId(Long stationId) {
         this.stationId = stationId;
+        //Gets saved preferences
         Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
-        int saved = prefs.getInt("fontSize_" + stationId, 24);
+        int saved = prefs.getInt("fontSize_" + stationId, 24);  //Gets the font size preferences based on station id as key
         fontSlider.setValue(saved);
         sliderLabel.setText(String.valueOf(saved));
+
+        //Gets the dark mode preferences and sets the setting scene to it
+        boolean isDark = prefs.getBoolean("darkMode_" + stationId, false);
+        darkModeCheckBox.setSelected(isDark);
+        if (isDark) {
+            Platform.runLater(() -> {
+                Scene settingsScene = fontSlider.getScene();
+                if (settingsScene != null) {
+                    settingsScene.getRoot().getStylesheets().clear();
+                    settingsScene.getRoot().getStylesheets().add(SettingsController.class.getResource("/css/dark-styles.css").toExternalForm());
+                }
+            });
+        }
     }
 
     public void initialize() {
@@ -65,7 +85,23 @@ public class SettingsController {
                         label.setStyle("-fx-font-size: " + value + "px;");
                     });
                 });
+            }
+        });
 
+
+        darkModeCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+            String css = newVal ? "/css/dark-styles.css" : "/css/styles.css";
+            prefs.putBoolean("darkMode_" + stationId, newVal);
+
+            if (scene != null) {
+                scene.getRoot().getStylesheets().clear();
+                scene.getRoot().getStylesheets().add(SettingsController.class.getResource(css).toExternalForm());
+            }
+            Scene settingsScene = fontSlider.getScene();
+            if (settingsScene != null) {
+                settingsScene.getRoot().getStylesheets().clear();
+                settingsScene.getRoot().getStylesheets().add(SettingsController.class.getResource(css).toExternalForm());
             }
         });
     }

@@ -6,6 +6,7 @@ import com.restaurant.KDS.entity.OrderStation;
 import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -105,14 +106,23 @@ public class RecallController {
             recallVbox.getChildren().add(itemVbox);
         }
 
-        // Apply saved font size
+        // Apply saved preferences
         Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+        //Font size
         int size = prefs.getInt("fontSize_" + station.getId(), 24);
         if (size != 24) {
             recallVbox.lookupAll(".label").forEach(label -> {
                 label.setStyle("-fx-font-size: " + size + "px;");
             });
         }
+        //Dark mode
+        boolean isDark = prefs.getBoolean("darkMode_" + station.getId(), false);
+        Platform.runLater(() -> {
+        if (isDark) {
+            recallVbox.getScene().getRoot().getStylesheets().clear();
+            recallVbox.getScene().getRoot().getStylesheets().add(SettingsController.class.getResource("/css/dark-styles.css").toExternalForm());
+        }
+        });
     }
 
     @FXML

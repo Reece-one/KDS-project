@@ -72,7 +72,7 @@
                         </VBox>
                         <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
                            <children>
-                              <CheckBox mnemonicParsing="false">
+                              <CheckBox fx:id="darkModeCheckBox" mnemonicParsing="false">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

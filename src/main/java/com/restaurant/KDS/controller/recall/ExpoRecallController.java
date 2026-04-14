@@ -1,8 +1,10 @@
 package com.restaurant.KDS.controller.recall;
 
+import com.restaurant.KDS.controller.settings.SettingsController;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
 import com.restaurant.KDS.service.OrderService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 @Component
 public class ExpoRecallController {
@@ -71,6 +74,24 @@ public class ExpoRecallController {
             recallVbox.getChildren().add(orderCard);
             recallVbox.getChildren().add(itemVbox);
         }
+
+        // Apply saved preferences
+        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+        //Font size
+        int size = prefs.getInt("fontSize_" + 0L, 24);
+        if (size != 24) {
+            recallVbox.lookupAll(".label").forEach(label -> {
+                label.setStyle("-fx-font-size: " + size + "px;");
+            });
+        }
+        //Dark mode
+        boolean isDark = prefs.getBoolean("darkMode_" + 0L, false);
+        Platform.runLater(() -> {
+            if (isDark) {
+                recallVbox.getScene().getRoot().getStylesheets().clear();
+                recallVbox.getScene().getRoot().getStylesheets().add(SettingsController.class.getResource("/css/dark-styles.css").toExternalForm());
+            }
+        });
     }
 
     @FXML

@@ -65,7 +65,7 @@
    <center>
       <ScrollPane fitToHeight="true" prefHeight="493.0" prefWidth="831.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
-            <FlowPane fx:id="mainFlowPane" hgap="10.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f5f5f5;" vgap="10.0" />
+            <FlowPane fx:id="mainFlowPane" hgap="10.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" styleClass="my-flow-pane" vgap="10.0" />
          </content>
       </ScrollPane>
    </center>

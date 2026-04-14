@@ -6,6 +6,7 @@ import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -164,6 +165,19 @@ public abstract class BaseStationController {
         }
     }
 
+    private void applyColourMode() {
+        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+        Long stationId = getStationId();
+        boolean isDark = prefs.getBoolean("darkMode_" + stationId, false);
+        Platform.runLater(() -> {
+            if (isDark) {
+                mainFlowPane.getScene().getRoot().getStylesheets().clear();
+                mainFlowPane.getScene().getRoot().getStylesheets().add(SettingsController.class.getResource("/css/dark-styles.css").toExternalForm());
+            }
+        });
+
+    }
+
     public void sortOrders() {
         List<Node> sorted = new ArrayList<>(mainFlowPane.getChildren());
         sorted.sort(getOrderCardComparator());
@@ -181,7 +195,9 @@ public abstract class BaseStationController {
         completeOrders = 0;
         populateOpenOrders();
         sortOrders();
+        applyColourMode();
         orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));
+
         //Automatically refreshes the screen
         Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
             populateOpenOrders();
