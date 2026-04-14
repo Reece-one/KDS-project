@@ -75,6 +75,7 @@ public class ExpoStationController extends BaseStationController {
         };
     }
 
+    //Completes the order depending on strict expo bump setting
     @FXML
     public void completeOrder(Order order, VBox container) {
         Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
@@ -92,7 +93,7 @@ public class ExpoStationController extends BaseStationController {
         order.setCompletedAt(LocalDateTime.now());
         orderService.saveOrder(order);
 
-        if (Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMinutes() < 1) {
+        if (orderService.isOnTime(order)) {
             onTime++;
         }
         completeOrders++;

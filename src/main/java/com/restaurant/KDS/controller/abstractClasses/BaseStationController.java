@@ -46,6 +46,9 @@ public abstract class BaseStationController {
 
     protected int onTime, completeOrders;
 
+    protected final Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+
+
     protected BaseStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
         this.orderService = orderService;
         this.orderStationService = orderStationService;
@@ -61,6 +64,10 @@ public abstract class BaseStationController {
     public abstract Comparator<Node> getOrderCardComparator();
 
     public abstract Long getStationId();
+
+    public int timeUntilLate() {
+        return prefs.getInt("timeUntilLate", 7);
+    }
 
     public void createOrderCard(Order order) {
         VBox containerVbox = new VBox();
@@ -78,11 +85,6 @@ public abstract class BaseStationController {
         headerHbox.getStyleClass().add("order-card-header");
         headerHbox.setOnMouseClicked((event) -> {
             onCardClick(order,  containerVbox);
-            if (java.time.Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMinutes() < 1) {
-                onTime++;
-            }
-            completeOrders++;
-            getAnalytics();
         });
 
         //Sets the order icon depending on eat out or takeaway
@@ -152,7 +154,6 @@ public abstract class BaseStationController {
     }
 
     private void applyFontSize() {
-        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
         Long stationId = getStationId();
         if (stationId == null) return;
         int size = prefs.getInt("fontSize_" + stationId, 18);
@@ -166,7 +167,6 @@ public abstract class BaseStationController {
     }
 
     private void applyColourMode() {
-        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
         Long stationId = getStationId();
         boolean isDark = prefs.getBoolean("darkMode_" + stationId, false);
         Platform.runLater(() -> {

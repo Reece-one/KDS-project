@@ -57,6 +57,12 @@ public class MainStationController extends BaseStationController {
         orderStationService.markComplete(order, station);
         container.getChildren().clear();
         ((Pane) container.getParent()).getChildren().remove(container);
+
+        if (orderService.isOnTime(order)) {
+            onTime++;
+        }
+        completeOrders++;
+        getAnalytics();
     }
 
     //Gets only the order items that correspond to the station

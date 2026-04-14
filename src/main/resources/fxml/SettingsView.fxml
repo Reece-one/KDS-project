@@ -126,7 +126,7 @@
                         </VBox>
                         <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
                            <children>
-                              <TextField alignment="CENTER" prefHeight="25.0" prefWidth="50.0" text="7" />
+                              <TextField fx:id="lateOrderTimeTextField" alignment="CENTER" prefHeight="25.0" prefWidth="50.0" text="7" />
                            </children>
                         </HBox>
                      </children>

@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.util.prefs.Preferences;
 import org.springframework.context.annotation.Scope;
@@ -34,6 +35,9 @@ public class SettingsController {
     @FXML
     private CheckBox bumpCheckBox;
 
+    @FXML
+    private TextField lateOrderTimeTextField;
+
     private final Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
 
 
@@ -47,12 +51,12 @@ public class SettingsController {
 
     public void setStationId(Long stationId) {
         this.stationId = stationId;
-        //Gets saved font preferences
+        //Gets saved font preference
         int saved = prefs.getInt("fontSize_" + stationId, 24);  //Gets the font size preferences based on station id as key
         fontSlider.setValue(saved);
         sliderLabel.setText(String.valueOf(saved));
 
-        //Gets the dark mode preferences and sets the setting scene to it
+        //Gets the dark mode preference and sets the setting scene to it
         boolean isDark = prefs.getBoolean("darkMode_" + stationId, false);
         darkModeCheckBox.setSelected(isDark);
         if (isDark) {
@@ -65,8 +69,13 @@ public class SettingsController {
             });
         }
 
+        //Gets the strict expo bump preference
         boolean strictBump = prefs.getBoolean("bump", false);
         bumpCheckBox.setSelected(strictBump);
+
+        //Gets the late order time preference
+        int lateOrderTime = prefs.getInt("lateOrderTime", 7);
+        lateOrderTimeTextField.setText(String.valueOf(lateOrderTime));
     }
 
     public void initialize() {
@@ -113,6 +122,11 @@ public class SettingsController {
         //Saves the preference for Strict Expo Bump
         bumpCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
             prefs.putBoolean("bump", newVal);
+        });
+
+        //Saves the preference for the late order time
+        lateOrderTimeTextField.textProperty().addListener((obs, oldVal, newVal) -> {
+            prefs.putInt("lateOrderTime", Integer.parseInt(newVal));
         });
     }
 
