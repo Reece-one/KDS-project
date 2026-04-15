@@ -14,9 +14,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="768" prefWidth="1024" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.orderEntry.OrderEntryController">
+<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.orderEntry.OrderEntryController">
 
-    <!-- CENTER: Menu items for selected category -->
     <center>
         <ScrollPane fitToWidth="true" prefHeight="768.0" prefWidth="585.0">
          <content>
@@ -40,11 +39,9 @@
         </ScrollPane>
     </center>
 
-    <!-- RIGHT: Modifications + Order summary side by side -->
     <right>
         <HBox BorderPane.alignment="CENTER">
 
-            <!-- Modifications column -->
             <VBox prefHeight="768.0" prefWidth="211.0" spacing="10" style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;">
                 <padding>
                     <Insets bottom="10" left="10" right="10" top="10" />
@@ -72,7 +69,6 @@
                 <Button maxWidth="Infinity" onAction="#addToOrder" text="Add to Order" />
             </VBox>
 
-            <!-- Order summary column -->
             <VBox prefHeight="727.0" prefWidth="202.0" spacing="10" style="-fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;">
                 <padding>
                     <Insets bottom="10" left="10" right="10" top="10" />
@@ -99,5 +95,8 @@
 
         </HBox>
     </right>
+    <left>
+        <fx:include source="NavBar.fxml" />
+    </left>
 
 </BorderPane>

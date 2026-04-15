@@ -2,6 +2,7 @@ package com.restaurant.KDS.controller.station;
 
 import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.StationService;
+import com.restaurant.KDS.util.ViewHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -37,6 +38,12 @@ public class AddStationController {
         stationService.saveStation(newStation);
 
         //Close the view
+        Stage stage = (Stage) nameTextField.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    private void onClose() throws IOException {
         Stage stage = (Stage) nameTextField.getScene().getWindow();
         stage.close();
     }

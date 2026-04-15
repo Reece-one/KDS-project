@@ -49,24 +49,6 @@ public class JavaFxApplication extends javafx.application.Application {
             stationStage.show();
         }
 
-        FXMLLoader fxmlloader2 = new FXMLLoader(getClass().getResource("/fxml/MenuItemConfig.fxml"));
-        fxmlloader2.setControllerFactory(springContext::getBean);
-        Parent root2 = fxmlloader2.load();
-
-        Stage stationStage = new Stage();
-        stationStage.setTitle("Menu Item config");
-        stationStage.setScene(new Scene(root2));
-        stationStage.show();
-
-        FXMLLoader fxmlloader3 = new FXMLLoader(getClass().getResource("/fxml/StationConfig.fxml"));
-        fxmlloader3.setControllerFactory(springContext::getBean);
-        Parent root3 = fxmlloader3.load();
-
-        Stage stationConfigStage = new Stage();
-        stationConfigStage.setTitle("Station config");
-        stationConfigStage.setScene(new Scene(root3));
-        stationConfigStage.show();
-
         FXMLLoader fxmlloader4 = new FXMLLoader(getClass().getResource("/fxml/ExpoStationView.fxml"));
         fxmlloader4.setControllerFactory(springContext::getBean);
         Parent root4 = fxmlloader4.load();

@@ -141,4 +141,9 @@ public class AddMenuItemController {
 
         ViewHelper.loadView("/fxml/MenuItemConfig.fxml", nameTextField, springContext);
     }
+
+    @FXML
+    private void onClose(ActionEvent event) throws Exception {
+        ViewHelper.loadView("/fxml/MenuItemConfig.fxml", nameTextField, springContext);
+    }
 }

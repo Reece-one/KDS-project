@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<ScrollPane hbarPolicy="NEVER" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.menuItem.AddMenuItemController">
+<ScrollPane hbarPolicy="NEVER" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.menuItem.AddMenuItemController">
    <content>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="600.0" spacing="10.0" stylesheets="@../css/styles.css">
          <children>
@@ -94,7 +93,7 @@
             </TextField>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button mnemonicParsing="false" styleClass="secondary-button" text="Cancel">
+                  <Button mnemonicParsing="false" onAction="#onClose" styleClass="secondary-button" text="Cancel">
                      <HBox.margin>
                         <Insets bottom="10.0" right="20.0" />
                      </HBox.margin>

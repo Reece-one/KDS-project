@@ -20,7 +20,7 @@
          </VBox.margin></TextField>
       <HBox alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="346.0">
          <children>
-            <Button mnemonicParsing="false" styleClass="secondary-button" text="Cancel">
+            <Button mnemonicParsing="false" onAction="#onClose" styleClass="secondary-button" text="Cancel">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
