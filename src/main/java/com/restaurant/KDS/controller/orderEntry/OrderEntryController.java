@@ -142,7 +142,16 @@ public class OrderEntryController {
         menuItemsByCategory.getChildren().clear();
 
         for (MenuItem item : items) {
-            Button button = new Button(item.getName());
+            Button button = new Button();
+            button.setWrapText(true);
+            if (!item.getAvailable()) {
+                button.setDisable(true);
+            }
+            if (item.getAllergens().isEmpty()) {
+                button.setText(item.getName());
+            } else {
+                button.setText(item.getName() + "\nContains: " + item.getAllergens());
+            }
             button.setOnAction(event -> {
                 menuItem = item;
                 populateIngredients(item);
