@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.restaurant.KDS.util.ViewHelper.showAlert;
+
 @Component
 public class EditMenuItemController {
 
@@ -65,11 +67,11 @@ public class EditMenuItemController {
         this.menuService = menuService;
         this.stationService = stationService;
         this.springContext = springContext;
-        this.allStations = stationService.getAllStations();
     }
 
     public void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
+        this.allStations = stationService.getAllStations();
         this.ingredients = new HashSet<>(menuItem.getIngredients());
         this.allergens = new HashSet<>(menuItem.getAllergens());
 
@@ -129,6 +131,14 @@ public class EditMenuItemController {
 
     @FXML
     private void onSave() throws Exception {
+        if (nameTextField.getText().trim().isEmpty()
+                || priceTextField.getText().trim().isEmpty()
+                || categoryTextField.getText().trim().isEmpty()
+                || timeTextField.getText().trim().isEmpty()) {
+            showAlert("Please fill in all required fields");
+            return;
+        }
+
         menuItem.setName(nameTextField.getText());
         menuItem.setPrice(new BigDecimal(priceTextField.getText()));
         menuItem.setCategory(categoryTextField.getText());

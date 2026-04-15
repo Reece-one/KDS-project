@@ -2,6 +2,7 @@ package com.restaurant.KDS.controller.station;
 
 import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.StationService;
+import com.restaurant.KDS.util.ViewHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -27,6 +28,9 @@ public class EditStationController {
 
     @FXML
     private void onSave() {
+        if (nameTextField.getText().trim().isEmpty()) {
+            ViewHelper.showAlert("Please enter a name!");
+        }
         station.setName(nameTextField.getText());
         stationService.saveStation(station);
         closeModal();

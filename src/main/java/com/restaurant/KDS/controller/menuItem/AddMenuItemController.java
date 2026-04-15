@@ -20,6 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.restaurant.KDS.util.ViewHelper.showAlert;
+
 @Component
 public class AddMenuItemController {
 
@@ -119,6 +121,14 @@ public class AddMenuItemController {
 
     @FXML
     private void onSubmit(ActionEvent event) throws Exception {
+        if (nameTextField.getText().trim().isEmpty()
+                || priceTextField.getText().trim().isEmpty()
+                || categoryTextField.getText().trim().isEmpty()
+                || timeTextField.getText().trim().isEmpty()) {
+            showAlert("Please fill in all required fields");
+            return;
+        }
+
         MenuItem menuItem = new MenuItem();
         menuItem.setName(nameTextField.getText());
         menuItem.setPrice(new BigDecimal(priceTextField.getText()));

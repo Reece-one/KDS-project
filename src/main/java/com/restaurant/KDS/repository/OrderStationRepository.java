@@ -15,4 +15,6 @@ public interface OrderStationRepository extends JpaRepository<OrderStation, Long
     List<OrderStation> findByOrder(Order order);
 
     List<OrderStation> findByStationAndCompleted(Station station, boolean completed);
+
+    void deleteByStation(Station station);
 }

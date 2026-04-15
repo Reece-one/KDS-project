@@ -17,6 +17,8 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     void deleteByOrder(Order order);
 
+    void deleteByMenuItem(MenuItem menuItem);
+
     @Query("SELECT SUM(oi.menuItem.price * oi.quantity) FROM OrderItem oi WHERE oi.order = :order")
     BigDecimal getTotalByOrder(@Param("order") Order order);
 

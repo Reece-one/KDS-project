@@ -21,27 +21,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.restaurant.KDS.util.ViewHelper.showAlert;
+
 @Component
 public class EditOrderItemController {
     private final OrderItemService orderItemService;
-    private final OrderService orderService;
-    private final MenuService menuService;
-    private Order order;
-    private final ConfigurableApplicationContext springContext;
 
     public EditOrderItemController(OrderItemService orderItemService, OrderService orderService, MenuService menuService, ConfigurableApplicationContext springContext) {
         this.orderItemService = orderItemService;
-        this.orderService = orderService;
-        this.menuService = menuService;
-        this.springContext = springContext;
-        this.order = new Order();
     }
-
-    @FXML
-    private HBox categoryHbox;
-
-    @FXML
-    private FlowPane menuItemsByCategory;
 
     @FXML
     private Label selectedItemLabel;
@@ -54,20 +42,6 @@ public class EditOrderItemController {
 
     @FXML
     private TextField modificationTextField;
-
-    @FXML
-    private VBox currentOrderVbox;
-
-    @FXML
-    private TextField tableNameField;
-
-    @FXML
-    private ComboBox<String> eatInCombo;
-
-    @FXML
-    private Label totalLabel;
-
-    private MenuItem menuItem;
 
     private OrderItem orderItem;
 
@@ -135,24 +109,11 @@ public class EditOrderItemController {
         modificationsVbox.getChildren().add(new Separator());
     }
 
-    public void showByCategory(String category) {
-    }
-
-    public void populateCategories() {
-    }
-
-    public void populateCurrentOrder() {
-    }
-
     @FXML
     public void addExtra() {
         if (!selectedItemLabel.getText().equals("No item selected")) {
             addModification("Add ", modificationTextField.getText());
         }
-    }
-
-    @FXML
-    public void onSubmit() {
     }
 
     @FXML
@@ -167,10 +128,6 @@ public class EditOrderItemController {
         orderItemService.saveOrderItem(orderItem);
         Stage stage = (Stage) selectedItemLabel.getScene().getWindow();
         stage.close();
-    }
-
-    @FXML
-    public void onClear() {
     }
 
     @FXML

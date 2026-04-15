@@ -20,24 +20,20 @@ public class AddStationController {
     @FXML
     private TextField nameTextField;
 
-    @FXML
-    private Button addStationButton;
-
     public AddStationController(StationService stationService) {
         this.stationService = stationService;
     }
 
     @FXML
     private void onSubmit(ActionEvent event) throws IOException {
-        //Get the name from the text field
+        if (nameTextField.getText().trim().isEmpty()) {
+            ViewHelper.showAlert("Please enter a name!");
+        }
         String name = nameTextField.getText();
-
-        //Create a new station object and assign it the name from the text field
         Station newStation = new Station();
         newStation.setName(name);
         stationService.saveStation(newStation);
 
-        //Close the view
         Stage stage = (Stage) nameTextField.getScene().getWindow();
         stage.close();
     }

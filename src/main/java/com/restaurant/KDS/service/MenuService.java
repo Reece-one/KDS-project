@@ -2,8 +2,11 @@ package com.restaurant.KDS.service;
 
 import com.restaurant.KDS.entity.MenuItem;
 import com.restaurant.KDS.repository.MenuItemRepository;
+import com.restaurant.KDS.repository.OrderItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,10 +14,12 @@ import java.util.Optional;
 public class MenuService {
 
     private final MenuItemRepository menuItemRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Autowired
-    public MenuService(MenuItemRepository menuItemRepository) {
+    public MenuService(MenuItemRepository menuItemRepository, OrderItemRepository orderItemRepository) {
         this.menuItemRepository = menuItemRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     public List<MenuItem> getAllMenuItems() {
@@ -25,7 +30,9 @@ public class MenuService {
         menuItemRepository.save(item);
     }
 
+    @Transactional
     public void deleteMenuItem(MenuItem item) {
+        orderItemRepository.deleteByMenuItem(item);
         menuItemRepository.delete(item);
     }
 

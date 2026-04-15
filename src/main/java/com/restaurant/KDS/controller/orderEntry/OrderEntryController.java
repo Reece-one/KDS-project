@@ -253,6 +253,8 @@ public class OrderEntryController {
             totalLabel.setText("£0.00");
             modificationsVbox.getChildren().clear();
             selectedItemLabel.setText("No item selected");
+        } else {
+            ViewHelper.showAlert("Please fill all the fields!");
         }
     }
 
