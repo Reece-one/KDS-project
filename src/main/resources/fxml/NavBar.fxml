@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="parentVBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="55.0" spacing="30.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.KDS.controller.navigation.NavBarController">
+   <children>
+      <ImageView fitHeight="93.0" fitWidth="${parentVBox.width}" onMouseClicked="#onOrder" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+         <image>
+            <Image url="@../images/receipt-solid.png" />
+         </image>
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </ImageView>
+      <ImageView fitHeight="85.0" fitWidth="${parentVBox.width}" onMouseClicked="#onMenu" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+         <image>
+            <Image url="@../images/burger-solid.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="82.0" fitWidth="${parentVBox.width}" onMouseClicked="#onStation" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
+         <image>
+            <Image url="@../images/window-maximize-solid.png" />
+         </image>
+      </ImageView>
+   </children>
+</VBox>
