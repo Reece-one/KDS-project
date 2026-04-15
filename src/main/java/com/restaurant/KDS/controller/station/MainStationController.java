@@ -7,6 +7,7 @@ import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
 import com.restaurant.KDS.entity.OrderStation;
 import com.restaurant.KDS.entity.Station;
+import com.restaurant.KDS.service.AiService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
 import com.restaurant.KDS.util.ViewHelper;
@@ -37,8 +38,8 @@ public class MainStationController extends BaseStationController {
 
     private Station station;
 
-    public MainStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
-        super(orderService, orderStationService, springContext);
+    public MainStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext, AiService aiService) {
+        super(orderService, orderStationService, springContext, aiService);
     }
 
     //Gets only orders that have at least one item that corresponds to the current station

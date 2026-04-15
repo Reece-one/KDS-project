@@ -2,6 +2,7 @@ package com.restaurant.KDS.controller.abstractClasses;
 
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
+import com.restaurant.KDS.service.AiService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
 import javafx.animation.KeyFrame;
@@ -33,6 +34,7 @@ public abstract class BaseStationController {
     protected final OrderService orderService;
     protected final OrderStationService orderStationService;
     protected final ConfigurableApplicationContext springContext;
+    protected final AiService aiService;
 
 
     @FXML
@@ -44,15 +46,21 @@ public abstract class BaseStationController {
     @FXML
     protected ProgressBar analyticsBar;
 
+    @FXML
+    protected Label estimatedWaitLabel;
+
     protected int onTime, completeOrders;
 
     protected final Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
 
+    protected static List<String> completedTimes = new ArrayList<>();
 
-    protected BaseStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
+
+    protected BaseStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext, AiService aiService) {
         this.orderService = orderService;
         this.orderStationService = orderStationService;
         this.springContext = springContext;
+        this.aiService = aiService;
     }
 
     public abstract List<Order> getOrders();
@@ -190,6 +198,36 @@ public abstract class BaseStationController {
         analyticsBar.setProgress(ratio);
     }
 
+    /*Asks AI what the estimated wait time for an order is during the session and
+      refreshes the answer every minute */
+    private Timeline getEstimatedWaitTime() {
+        Timeline aiRefresh = new Timeline(new KeyFrame(Duration.seconds(60), event -> {
+            String prompt = "You are given historical order completion data."
+                    + "Each entry contains completion time in minutes and timestamp when the order was completed. "
+                    + "Estimate a realistic completion time for a new order right now. "
+                    + "Do not simply calculate the average. "
+                    + "Instead prioritise recent data over older data, detect time of day patterns, "
+                    + "reduce the influence of outlier, if recent orders are trending faster "
+                    + "or slower, reflect that in the estimate. return a single estimated completion time in minutes"
+                    + "DO NOT respond with reasoning, strictly a single whole number. "
+                    + "Times: "  + completedTimes + "Current time: " + LocalDateTime.now();
+
+            new Thread(() -> {
+                try {
+                    String result = aiService.askAi(prompt);
+                    Platform.runLater(() -> {
+                        int minutes = (int) Math.round(Double.parseDouble(result.trim()));
+                        estimatedWaitLabel.setText(minutes + " min");
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }));
+        aiRefresh.setCycleCount(Timeline.INDEFINITE);
+        return aiRefresh;
+    }
+
     public void refresh() {
         onTime = 0;
         completeOrders = 0;
@@ -206,6 +244,9 @@ public abstract class BaseStationController {
         }));
         refresh.setCycleCount(Timeline.INDEFINITE);
         refresh.play();
+
+        Timeline aiRefresh = getEstimatedWaitTime();
+        aiRefresh.play();
     }
 
 }

@@ -5,6 +5,7 @@ import com.restaurant.KDS.controller.settings.SettingsController;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
 import com.restaurant.KDS.entity.OrderStation;
+import com.restaurant.KDS.service.AiService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
 import com.restaurant.KDS.util.ViewHelper;
@@ -31,8 +32,8 @@ import java.util.prefs.Preferences;
 @Component
 public class ExpoStationController extends BaseStationController {
 
-    public ExpoStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext) {
-        super(orderService, orderStationService, springContext);
+    public ExpoStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext, AiService aiService) {
+        super(orderService, orderStationService, springContext, aiService);
     }
 
     @Override
@@ -98,6 +99,11 @@ public class ExpoStationController extends BaseStationController {
         }
         completeOrders++;
         getAnalytics();
+
+        //Add how long it took to complete the order to completedTimes
+        long minutes = java.time.Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMinutes();
+        completedTimes.add("{ minutes: " + minutes + "completed_at: " + order.getCompletedAt() + "}");
+
         container.getChildren().clear();
         ((Pane) container.getParent()).getChildren().remove(container);
     }

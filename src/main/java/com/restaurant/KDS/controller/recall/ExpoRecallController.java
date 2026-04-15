@@ -23,6 +23,7 @@ public class ExpoRecallController {
     @FXML
     private VBox recallVbox;
 
+    private List<Long> completedTimes;
 
     private final OrderService orderService;
 

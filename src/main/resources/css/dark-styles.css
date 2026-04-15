@@ -1,0 +1,358 @@
+/* KDS Dark Mode */
+/* Based on original colour palette with dark backgrounds */
+/* Graphite:    #433a3f
+/* Blue Slate:  #3d5a6c
+/* Muted Teal:  #72a98f
+/* Light Green: #8de969
+/* Lemon Lime:  #cbef43
+
+/* Root background */
+.root {
+    -fx-background-color: #1e1e1e;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #b0c4d8;
+    -fx-font-size: 18px;
+}
+
+.label.title {
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+    -fx-background-color: #2a2428;
+}
+
+.titleLabel {
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+    -fx-background-color: #2a2428;
+}
+
+.order-entry-modifications-label {
+    -fx-font-size: 18px;
+}
+
+/* Description labels (smaller sub-text) */
+.label.description {
+    -fx-text-fill: #72a98f;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #3d5a6c;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+}
+
+.button:pressed {
+    -fx-background-color: #72a98f;
+    -fx-text-fill: #1e1e1e;
+}
+
+.button.addStation {
+    -fx-background-color: #2a2428;
+    -fx-background-radius: 0;
+    -fx-text-fill: white;
+}
+
+.station-button {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 32px;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 40 60;
+    -fx-border-color: transparent transparent #3d5a6c transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-text-fill: #72a98f;
+}
+
+.tertiary-button {
+    -fx-background-color: #6bbf4a;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+}
+
+.quaternary-button {
+    -fx-background-color: #a8c935;
+    -fx-text-fill: #1e1e1e;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+}
+
+.menu-item-card-button {
+    -fx-padding: 30 50;
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #e0e0e0;
+    -fx-prompt-text-fill: #72a98f;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 18px;
+}
+
+/* Check boxes */
+.check-box .text {
+    -fx-text-fill: #cbef43;
+    -fx-font-size: 18px;
+}
+
+.check-box .box {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 18px;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #6bbf4a;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #1e1e1e;
+}
+
+/* Slider */
+.slider .track {
+    -fx-background-color: #3a3a3a;
+}
+
+.slider .thumb {
+    -fx-background-color: #8de969;
+}
+
+/* Progress bar */
+.progress-bar .track {
+    -fx-background-color: #ff6b6b;
+    -fx-background-radius: 10;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #8de969;
+    -fx-background-radius: 10;
+}
+
+/* Scroll pane */
+.scroll-pane {
+    -fx-background-color: #1e1e1e;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #1e1e1e;
+}
+
+.scroll-pane .scroll-bar .track {
+    -fx-background-color: #2b2b2b;
+}
+
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: #72a98f;
+}
+
+/* Flow pane */
+.my-flow-pane {
+    -fx-background-color: #1e1e1e;
+}
+
+/* HBox */
+.order-entry-modifications {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+/* Setting row dividers */
+.setting-row {
+    -fx-border-color: transparent transparent #3d5a6c transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: #2b2b2b;
+    -fx-padding: 10 10 10 10;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+/* Column headers */
+.table-view .column-header {
+    -fx-background-color: #3d5a6c;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+}
+
+/* Table rows */
+.table-view .table-row-cell {
+    -fx-background-color: #2b2b2b;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #72a98f;
+}
+
+/* Cell text */
+.table-view .table-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 18px;
+}
+
+/* Remove header line between columns */
+.table-view .column-header-background {
+    -fx-background-color: #3d5a6c;
+}
+
+/* Empty rows */
+.table-view .table-row-cell:empty {
+    -fx-background-color: #1e1e1e;
+}
+
+/* Spinner */
+.spinner {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 18px;
+}
+
+.spinner .text-field {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: transparent;
+    -fx-background-radius: 10 0 0 10;
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: #3d5a6c;
+    -fx-background-radius: 0 10 0 0;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-color: #3d5a6c;
+    -fx-background-radius: 0 0 10 0;
+}
+
+.spinner .increment-arrow-button .increment-arrow {
+    -fx-background-color: white;
+}
+
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: white;
+}
+
+.spinner .increment-arrow-button:pressed {
+    -fx-background-color: #72a98f;
+}
+
+.spinner .decrement-arrow-button:pressed {
+    -fx-background-color: #72a98f;
+}
+
+/* Combo box */
+.combo-box {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #72a98f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 16px;
+}
+
+/* The arrow button */
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #b0c4d8;
+}
+
+/* The dropdown list */
+.combo-box-popup .list-view {
+    -fx-background-color: #2b2b2b;
+}
+
+.combo-box-popup .list-cell {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 14px;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #3d5a6c;
+    -fx-text-fill: white;
+}
+
+/* Order Card */
+.order-card-container {
+    -fx-background-color: #2b2b2b;
+    -fx-pref-width: 300;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent transparent #3d5a6c transparent;
+}
+
+.order-card-main-content {
+    -fx-padding: 5 10;
+    -fx-spacing: 5;
+}
+
+.order-card-header {
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 5 10;
+}
+
+.timer-label {
+    -fx-padding: 5 10;
+}
+
+.order-card-container .label {
+    -fx-text-fill: #e0e0e0;
+}
+
+.order-card-container .order-card-quantity-text {
+    -fx-text-fill: white;
+    -fx-background-color: #3d5a6c;
+    -fx-padding: 0 10;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.order-card-name-quantity {
+    -fx-spacing: 5;
+}
+
+.order-card-container .order-card-modification-text {
+    -fx-padding: 0 0 0 39;
+    -fx-text-fill: #72a98f;
+    -fx-font-style: italic;
+}
+
+/* Station analytics bar */
+.analytics-node {
+    -fx-background-color: #3d5a6c;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.analytics-node .label {
+    -fx-text-fill: white;
+}
