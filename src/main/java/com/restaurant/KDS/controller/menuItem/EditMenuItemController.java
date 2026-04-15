@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class EditMenuItemController {
@@ -25,8 +27,8 @@ public class EditMenuItemController {
     private final ConfigurableApplicationContext springContext;
 
     private MenuItem menuItem;
-    private List<String> ingredients;
-    private List<String> allergens;
+    private Set<String> ingredients;
+    private Set<String> allergens;
     private List<Station> allStations;
 
     @FXML
@@ -68,8 +70,8 @@ public class EditMenuItemController {
 
     public void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
-        this.ingredients = new ArrayList<>(menuItem.getIngredients());
-        this.allergens = new ArrayList<>(menuItem.getAllergens());
+        this.ingredients = new HashSet<>(menuItem.getIngredients());
+        this.allergens = new HashSet<>(menuItem.getAllergens());
 
         nameTextField.setText(menuItem.getName());
         priceTextField.setText(menuItem.getPrice().toString());
@@ -82,12 +84,12 @@ public class EditMenuItemController {
         loadStationCheckboxes();
     }
 
-    private void refreshTags(List<String> list, FlowPane flowPane) {
+    private void refreshTags(Set<String> set, FlowPane flowPane) {
         flowPane.getChildren().clear();
-        for (String item : list) {
+        for (String item :set) {
             Button button = new Button(item);
             button.setOnAction(event -> {
-                list.remove(item);
+                set.remove(item);
                 flowPane.getChildren().remove(button);
             });
             button.getStyleClass().add("tertiary-button");
@@ -107,12 +109,12 @@ public class EditMenuItemController {
         }
     }
 
-    private void addTag(TextField textField, List<String> list, FlowPane flowPane) {
+    private void addTag(TextField textField, Set<String> set, FlowPane flowPane) {
         String value = textField.getText();
         if (value == null || value.trim().isEmpty()) return;
-        list.add(value);
+        set.add(value);
         textField.clear();
-        refreshTags(list, flowPane);
+        refreshTags(set, flowPane);
     }
 
     @FXML

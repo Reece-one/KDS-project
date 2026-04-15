@@ -115,7 +115,7 @@ public class OrderEntryController {
         selectedItemLabel.setText(menuItem.getName());
 
         modificationsVbox.getChildren().clear();
-        List<String> ingredients = menuItem.getIngredients();
+        Set<String> ingredients = menuItem.getIngredients();
 
         for (String ingredient : ingredients) {
             HBox hBox = new HBox();

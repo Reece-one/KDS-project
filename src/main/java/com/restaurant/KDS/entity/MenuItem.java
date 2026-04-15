@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "menu_items")
@@ -24,14 +26,19 @@ public class MenuItem {
     private String category;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "menu_item_ingredients", joinColumns = @JoinColumn(name = "menu_item_id"))
+    @CollectionTable(name = "menu_item_ingredients",
+            joinColumns = @JoinColumn(name = "menu_item_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"menu_item_id", "ingredient"})
+    )
     @Column(name = "ingredient")
-    private List<String> ingredients = new ArrayList<>();
+    private Set<String> ingredients = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "menu_item_allergens", joinColumns = @JoinColumn(name = "menu_item_id"))
+    @CollectionTable(name = "menu_item_allergens", joinColumns = @JoinColumn(name = "menu_item_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"menu_item_id", "allergen"})
+    )
     @Column(name = "allergen")
-    private List<String> allergens = new ArrayList<>();
+    private Set<String> allergens = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "menu_item_stations", joinColumns = @JoinColumn(name = "menu_item_id"), inverseJoinColumns = @JoinColumn(name = "station_id"))
@@ -75,14 +82,14 @@ public class MenuItem {
     public String getCategory() {return category;}
     public void setCategory(String category) {this.category = category;}
 
-    public List<String> getIngredients() {return ingredients;}
-    public void setIngredients(List<String> ingredients) {this.ingredients = ingredients;}
+    public Set<String> getIngredients() {return ingredients;}
+    public void setIngredients(Set<String> ingredients) {this.ingredients = ingredients;}
 
     public List<Station> getStations() {return stations;}
     public void setStations(List<Station> stations) {this.stations = stations;}
 
-    public List<String> getAllergens() {return allergens;}
-    public void setAllergens(List<String> allergens) {this.allergens = allergens;}
+    public Set<String> getAllergens() {return allergens;}
+    public void setAllergens(Set<String> allergens) {this.allergens = allergens;}
 
     public Boolean getAvailable() {return available;}
     public void setAvailable(Boolean available) {this.available = available;}

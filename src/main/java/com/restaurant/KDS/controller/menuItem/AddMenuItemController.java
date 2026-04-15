@@ -16,7 +16,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class AddMenuItemController {
@@ -26,7 +28,7 @@ public class AddMenuItemController {
     private final StationService stationService;
 
 
-    private List<String> ingredients, allergens;
+    private Set<String> ingredients, allergens;
 
     private List<Station> stations;
 
@@ -64,23 +66,23 @@ public class AddMenuItemController {
     public AddMenuItemController(MenuService menuService, ConfigurableApplicationContext springContext, StationService stationService) {
         this.menuService = menuService;
         this.springContext = springContext;
-        ingredients = new ArrayList<>();
-        allergens = new ArrayList<>();
+        ingredients = new HashSet<>();
+        allergens = new HashSet<>();
         this.stationService = stationService;
     }
 
 
-    private void addTag(TextField textField, List<String> list, FlowPane flowPane) {
+    private void addTag(TextField textField, Set<String> set, FlowPane flowPane) {
         String value = textField.getText();
         if (value == null || value.trim().isEmpty()) return;
-        list.add(value);
+        set.add(value);
         textField.clear();
 
         flowPane.getChildren().clear();
-        for (String item : list) {
+        for (String item : set) {
             Button button = new Button(item);
             button.setOnAction(buttonEvent -> {
-                list.remove(item);
+                set.remove(item);
                 flowPane.getChildren().remove(button); //Clicking the button removes the item from the list
             });
             button.getStyleClass().add("tertiary-button");
