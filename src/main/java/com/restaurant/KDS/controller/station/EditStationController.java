@@ -6,6 +6,7 @@ import com.restaurant.KDS.util.ViewHelper;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,6 +40,14 @@ public class EditStationController {
     @FXML
     private void onDelete() {
         stationService.deleteStation(station);
+
+        Stage target = Window.getWindows().stream()
+                .filter(w -> w instanceof Stage s && station.getName().equals(s.getTitle()))
+                .map(w -> (Stage) w)
+                .findFirst()
+                .orElse(null);
+
+        target.close();
         closeModal();
     }
 
