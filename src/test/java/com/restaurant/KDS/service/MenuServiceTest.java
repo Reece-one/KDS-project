@@ -11,7 +11,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,8 +38,8 @@ public class MenuServiceTest {
         item.setCategory("Main");
         item.setAvailable(true);
         item.setPrepTimeMinutes(3);
-        item.setIngredients(new ArrayList<>(List.of("bread", "cheese")));
-        item.setAllergens(new ArrayList<>(List.of("gluten")));
+        item.setIngredients(new HashSet<>(List.of("bread", "cheese")));
+        item.setAllergens(new HashSet<>(List.of("gluten")));
         item.setStations(new ArrayList<>());
         menuService.saveMenuItem(item);
         return item;
@@ -59,7 +61,7 @@ public class MenuServiceTest {
         burger.setPrice(BigDecimal.valueOf(10.00));
         burger.setCategory("Main");
 
-        List<String> ingredients = new ArrayList<>();
+        Set<String> ingredients = new HashSet<>();
         ingredients.add("bread");
         ingredients.add("beef patty");
         ingredients.add("cheese");
@@ -69,7 +71,7 @@ public class MenuServiceTest {
         ingredients.add("sauce");
         burger.setIngredients(ingredients);
 
-        List<String> allergens = new ArrayList<>();
+        Set<String> allergens = new HashSet<>();
         allergens.add("gluten");
         burger.setAllergens(allergens);
 
@@ -129,8 +131,8 @@ public class MenuServiceTest {
         item2.setCategory("Side");
         item2.setAvailable(true);
         item2.setPrepTimeMinutes(2);
-        item2.setIngredients(new ArrayList<>(List.of("potato")));
-        item2.setAllergens(new ArrayList<>());
+        item2.setIngredients(new HashSet<>(List.of("potato")));
+        item2.setAllergens(new HashSet<>());
         item2.setStations(new ArrayList<>());
         menuService.saveMenuItem(item2);
 
@@ -152,8 +154,8 @@ public class MenuServiceTest {
         item2.setCategory("Side");
         item2.setAvailable(true);
         item2.setPrepTimeMinutes(2);
-        item2.setIngredients(new ArrayList<>(List.of("potato")));
-        item2.setAllergens(new ArrayList<>());
+        item2.setIngredients(new HashSet<>(List.of("potato")));
+        item2.setAllergens(new HashSet<>());
         item2.setStations(new ArrayList<>());
         menuService.saveMenuItem(item2);
 

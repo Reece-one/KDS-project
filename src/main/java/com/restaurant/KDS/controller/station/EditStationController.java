@@ -41,6 +41,7 @@ public class EditStationController {
     private void onDelete() {
         stationService.deleteStation(station);
 
+        //Closes the window corresponding to the station
         Stage target = Window.getWindows().stream()
                 .filter(w -> w instanceof Stage s && station.getName().equals(s.getTitle()))
                 .map(w -> (Stage) w)

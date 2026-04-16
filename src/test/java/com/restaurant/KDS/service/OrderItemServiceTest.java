@@ -8,9 +8,11 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 public class OrderItemServiceTest {
 
     @Autowired
@@ -39,8 +42,8 @@ public class OrderItemServiceTest {
         item.setCategory("Main");
         item.setAvailable(true);
         item.setPrepTimeMinutes(3);
-        item.setIngredients(new ArrayList<>(List.of("bread")));
-        item.setAllergens(new ArrayList<>(List.of("gluten")));
+        item.setIngredients(new HashSet<>(List.of("bread")));
+        item.setAllergens(new HashSet<>(List.of("gluten")));
         item.setStations(new ArrayList<>());
         menuService.saveMenuItem(item);
         return item;
