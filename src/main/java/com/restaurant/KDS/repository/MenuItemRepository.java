@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
+
     List<MenuItem> findByStationsContaining(Station station);
 
     @Query("SELECT DISTINCT m.category FROM MenuItem m")

@@ -37,6 +37,13 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+    /**
+     * Checks if the time the {@link Order} took to complete was less that the late time
+     * {@link Preferences}.
+     *
+     * @param order the order that the comparison is done on
+     * @return a boolean to see if the order was late or not
+     */
     public boolean isOnTime(Order order) {
         Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
         if (order.getOpenedAt() == null) return true;
