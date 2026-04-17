@@ -112,7 +112,8 @@ public abstract class BaseStationController {
 
         //Creates the header for the order card
         HBox headerHbox = new HBox();
-        if (orderService.isOnTime(order)) {
+        int lateOrderTime = Preferences.userNodeForPackage(SettingsController.class).getInt("lateOrderTime", 7);
+        if (orderService.isOnTime(order, lateOrderTime)) {
             headerHbox.setStyle("-fx-background-color: #8de969;"); // green
         } else {
             headerHbox.setStyle("-fx-background-color: #ff6b6b;"); // red

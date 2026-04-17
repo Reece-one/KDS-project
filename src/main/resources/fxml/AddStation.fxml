@@ -25,7 +25,7 @@
                   <Insets right="20.0" />
                </HBox.margin>
             </Button>
-            <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onSubmit" text="Submit">
+            <Button fx:id="onSubmit" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onSubmit" text="Submit">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>

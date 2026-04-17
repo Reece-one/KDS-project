@@ -1,15 +1,13 @@
 package com.restaurant.KDS.service;
 
-import com.restaurant.KDS.controller.settings.SettingsController;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.prefs.Preferences;
 
 @Service
 public class OrderService {
@@ -38,17 +36,17 @@ public class OrderService {
     }
 
     /**
-     * Checks if the time the {@link Order} took to complete was less that the late time
-     * {@link Preferences}.
+     * Checks whether the {@link Order} is late or not.
      *
-     * @param order the order that the comparison is done on
-     * @return a boolean to see if the order was late or not
+     * @param order                the order that the comparison is done on
+     * @param lateOrderTimeMinutes the time in minutes after which the order is considered late
+     * @return {@code true} if the elapsed time is less than or equal to {@code lateOrderTimeMinutes},
+     * or if the order has not been opened yet
      */
-    public boolean isOnTime(Order order) {
-        Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
+    public boolean isOnTime(Order order, int lateOrderTimeMinutes) {
         if (order.getOpenedAt() == null) return true;
-        double elapsed = java.time.Duration.between(order.getOpenedAt(), java.time.LocalDateTime.now()).toMillis() / 60000.0;
-        return elapsed <= prefs.getInt("lateOrderTime", 7);
+        double elapsed = Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMillis() / 60000.0;
+        return elapsed <= lateOrderTimeMinutes;
     }
 
 }

@@ -38,6 +38,7 @@ public class AddStationController {
     private void onSubmit(ActionEvent event) throws IOException {
         if (nameTextField.getText().trim().isEmpty()) {
             ViewHelper.showAlert("Please enter a name!");
+            return;
         }
         String name = nameTextField.getText();
         Station newStation = new Station();

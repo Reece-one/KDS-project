@@ -102,7 +102,7 @@ public class ExpoStationController extends BaseStationController {
         order.setCompletedAt(LocalDateTime.now());
         orderService.saveOrder(order);
 
-        if (orderService.isOnTime(order)) {
+        if (orderService.isOnTime(order, prefs.getInt("lateOrderTime", 7))) {
             onTime++;
         }
         completeOrders++;

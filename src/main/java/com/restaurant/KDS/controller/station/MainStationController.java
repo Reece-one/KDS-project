@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 
 @Component
@@ -58,7 +59,8 @@ public class MainStationController extends BaseStationController {
         container.getChildren().clear();
         ((Pane) container.getParent()).getChildren().remove(container);
 
-        if (orderService.isOnTime(order)) {
+        int lateOrderTime = Preferences.userNodeForPackage(SettingsController.class).getInt("lateOrderTime", 7);
+        if (orderService.isOnTime(order, lateOrderTime)) {
             onTime++;
         }
         completeOrders++;
