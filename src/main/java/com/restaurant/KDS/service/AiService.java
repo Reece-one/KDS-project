@@ -42,7 +42,6 @@ public class AiService {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(">>>>>>>> DeepSeek response: " + response.body());
 
         JsonNode responseJson = mapper.readTree(response.body());
         return responseJson.at("/choices/0/message/content").asText();

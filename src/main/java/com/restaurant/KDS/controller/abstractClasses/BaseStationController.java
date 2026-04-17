@@ -2,6 +2,7 @@ package com.restaurant.KDS.controller.abstractClasses;
 
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
+import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.AiService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
@@ -23,7 +24,9 @@ import javafx.util.Duration;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.time.LocalDateTime;
+
 import com.restaurant.KDS.controller.settings.SettingsController;
+
 import java.util.prefs.Preferences;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -63,20 +66,44 @@ public abstract class BaseStationController {
         this.aiService = aiService;
     }
 
+    /**
+     * Gets the orders that correspond the {@link Station}
+     *
+     * @return a list of {@link Order}
+     */
     public abstract List<Order> getOrders();
 
+    /**
+     * Defined the behaviour when the header of the order card is clicked
+     *
+     * @param order     the order that the card represents
+     * @param container the root node of the order card
+     */
     public abstract void onCardClick(Order order, VBox container);
 
+    /**
+     * Gets the order items for the {@link Order} that correspond to this {@link Station}.
+     *
+     * @param order the order to get the order items for
+     * @return a list of {@link OrderItem}s for this station
+     */
     public abstract List<OrderItem> getOrderItems(Order order);
 
+    /**
+     * Gets the {@link Comparator} that defines how order cards are ordered
+     * on the {@link Station} {@link FlowPane}
+     *
+     * @return a {@link Comparator} that orders {@link Node} order cards by priority
+     */
     public abstract Comparator<Node> getOrderCardComparator();
 
     public abstract Long getStationId();
 
-    public int timeUntilLate() {
-        return prefs.getInt("timeUntilLate", 7);
-    }
-
+    /**
+     * Builds the order card and adds it to the main {@link FlowPane}
+     *
+     * @param order the {@link Order} that the card represents
+     */
     public void createOrderCard(Order order) {
         VBox containerVbox = new VBox();
         containerVbox.getStyleClass().add("order-card-container");
@@ -92,7 +119,7 @@ public abstract class BaseStationController {
         headerHbox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         headerHbox.getStyleClass().add("order-card-header");
         headerHbox.setOnMouseClicked((event) -> {
-            onCardClick(order,  containerVbox);
+            onCardClick(order, containerVbox);
         });
 
         //Sets the order icon depending on eat out or takeaway
@@ -152,6 +179,9 @@ public abstract class BaseStationController {
         mainFlowPane.getChildren().add(containerVbox);
     }
 
+    /**
+     * Runs a loop so every open {@link Order} has an order card
+     */
     public void populateOpenOrders() {
         mainFlowPane.getChildren().clear();
         List<Order> openOrders = getOrders();
@@ -161,11 +191,15 @@ public abstract class BaseStationController {
         applyFontSize();
     }
 
+    /**
+     * Finds the set {@code fontSize_} for the {@code Station} and applies it to the
+     * order card
+     */
     private void applyFontSize() {
         Long stationId = getStationId();
         if (stationId == null) return;
-        int size = prefs.getInt("fontSize_" + stationId, 18);
-        if (size != 18) {
+        int size = prefs.getInt("fontSize_" + stationId, 24);
+        if (size != 24) {
             mainFlowPane.lookupAll(".order-card-container").forEach(container -> {
                 container.lookupAll(".label").forEach(label -> {
                     label.setStyle("-fx-font-size: " + size + "px;");
@@ -174,6 +208,10 @@ public abstract class BaseStationController {
         }
     }
 
+    /**
+     * Finds the set {@code darkMode_} for the {@code Station} and applies it to the
+     * station stage (including the settings and recall screen)
+     */
     private void applyColourMode() {
         Long stationId = getStationId();
         boolean isDark = prefs.getBoolean("darkMode_" + stationId, false);
@@ -186,6 +224,9 @@ public abstract class BaseStationController {
 
     }
 
+    /**
+     * Sorts the order cards using the comparator
+     */
     public void sortOrders() {
         List<Node> sorted = new ArrayList<>(mainFlowPane.getChildren());
         sorted.sort(getOrderCardComparator());
@@ -193,13 +234,21 @@ public abstract class BaseStationController {
     }
 
 
+    /**
+     * Calculates the ratio based on orders not late/total orders complete and
+     * sets the ratio on the analytics {@link ProgressBar}
+     */
     public void getAnalytics() {
         double ratio = completeOrders == 0 ? 0.0 : (double) onTime / completeOrders;
         analyticsBar.setProgress(ratio);
     }
 
-    /*Asks AI what the estimated wait time for an order is during the session and
-      refreshes the answer every minute */
+    /**
+     * Creates a timeline that periodically estimates order wait time using {@link AiService},
+     * updating {@code estimatedWaitLabel} every 60 seconds.
+     *
+     * @return a repeating {@code Timeline} that refreshes the estimated wait time
+     */
     private Timeline getEstimatedWaitTime() {
         Timeline aiRefresh = new Timeline(new KeyFrame(Duration.seconds(60), event -> {
             String prompt = "You are given historical order completion data."
@@ -210,7 +259,7 @@ public abstract class BaseStationController {
                     + "reduce the influence of outlier, if recent orders are trending faster "
                     + "or slower, reflect that in the estimate. return a single estimated completion time in minutes"
                     + "DO NOT respond with reasoning, strictly a single whole number. "
-                    + "Times: "  + completedTimes + "Current time: " + LocalDateTime.now();
+                    + "Times: " + completedTimes + "Current time: " + LocalDateTime.now();
 
             new Thread(() -> {
                 try {
@@ -228,6 +277,10 @@ public abstract class BaseStationController {
         return aiRefresh;
     }
 
+    /**
+     * Initializes the main station screen and creates a timeline to refresh it ever
+     * 2 seconds
+     */
     public void refresh() {
         onTime = 0;
         completeOrders = 0;

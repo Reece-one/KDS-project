@@ -73,7 +73,15 @@ public class AddMenuItemController {
         this.stationService = stationService;
     }
 
-
+    /**
+     * an entry into the {@link TextField} adds the item into a {@link Set} and creates a
+     * tag of the item into the {@link FlowPane} . Clicking the tag removes the item
+     * from the set and flow pane.
+     *
+     * @param textField the name of the tag
+     * @param set       the set of tags
+     * @param flowPane  the flowpane where the tags are injected
+     */
     private void addTag(TextField textField, Set<String> set, FlowPane flowPane) {
         String value = textField.getText();
         if (value == null || value.trim().isEmpty()) return;
@@ -102,6 +110,9 @@ public class AddMenuItemController {
         addTag(allergenTextField, allergens, allergensFlowPane);
     }
 
+    /**
+     * Gets all {@link Station}s and creates a {@link CheckBox} for each.
+     */
     @FXML
     private void addStations() {
         stationFlowPane.getChildren().clear();
@@ -119,6 +130,11 @@ public class AddMenuItemController {
         addStations();
     }
 
+    /**
+     * Uses filled in fields to create a new {@link MenuItem} then returns to the
+     * previous stage
+     *
+     */
     @FXML
     private void onSubmit(ActionEvent event) throws Exception {
         if (nameTextField.getText().trim().isEmpty()

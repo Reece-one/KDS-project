@@ -69,6 +69,11 @@ public class EditMenuItemController {
         this.springContext = springContext;
     }
 
+    /**
+     * Populates all fields with {@link MenuItem} details.
+     *
+     * @param menuItem the menu item that is represented
+     */
     public void setMenuItem(MenuItem menuItem) {
         this.menuItem = menuItem;
         this.allStations = stationService.getAllStations();
@@ -86,9 +91,15 @@ public class EditMenuItemController {
         loadStationCheckboxes();
     }
 
+    /**
+     * Adds tags to the {@link FlowPane} for every {@link String} in the {@link Set}.
+     *
+     * @param set the set which the tags are composed of
+     * @param flowPane the flowpane where the tags are added
+     */
     private void refreshTags(Set<String> set, FlowPane flowPane) {
         flowPane.getChildren().clear();
-        for (String item :set) {
+        for (String item : set) {
             Button button = new Button(item);
             button.setOnAction(event -> {
                 set.remove(item);
