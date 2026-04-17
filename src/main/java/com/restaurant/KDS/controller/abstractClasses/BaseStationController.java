@@ -74,7 +74,8 @@ public abstract class BaseStationController {
     public abstract List<Order> getOrders();
 
     /**
-     * Defined the behaviour when the header of the order card is clicked
+     * Defined the behaviour when the header of the order card is clicked and updates
+     * analytics.
      *
      * @param order     the order that the card represents
      * @param container the root node of the order card
@@ -198,8 +199,8 @@ public abstract class BaseStationController {
     private void applyFontSize() {
         Long stationId = getStationId();
         if (stationId == null) return;
-        int size = prefs.getInt("fontSize_" + stationId, 24);
-        if (size != 24) {
+        int size = prefs.getInt("fontSize_" + stationId, 18);
+        if (size != 18) {
             mainFlowPane.lookupAll(".order-card-container").forEach(container -> {
                 container.lookupAll(".label").forEach(label -> {
                     label.setStyle("-fx-font-size: " + size + "px;");

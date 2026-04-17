@@ -5,6 +5,7 @@ import com.restaurant.KDS.controller.settings.SettingsController;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.OrderItem;
 import com.restaurant.KDS.entity.OrderStation;
+import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.AiService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
@@ -44,6 +45,7 @@ public class ExpoStationController extends BaseStationController {
         return orders;
     }
 
+
     @Override
     public void onCardClick(Order order, VBox container) {
         completeOrder(order, container);
@@ -60,7 +62,6 @@ public class ExpoStationController extends BaseStationController {
         return order.getOrderItems();
     }
 
-    //Compares orders by status for sorting. Orders by "Recalled" first then openedAt time second
     @Override
     public Comparator<Node> getOrderCardComparator() {
         return (a, b) -> {
@@ -76,7 +77,14 @@ public class ExpoStationController extends BaseStationController {
         };
     }
 
-    //Completes the order depending on strict expo bump setting
+    /**
+     * Sets the {@link Order} that corresponds to the order card to "Complete" and
+     * updates the analytics. If the strict expo bump setting is off then all
+     * {@link OrderStation}s connected to this order are set to complete.
+     *
+     * @param order     the order that corresponds to the order card
+     * @param container the order card container {@link VBox}
+     */
     @FXML
     public void completeOrder(Order order, VBox container) {
         Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);

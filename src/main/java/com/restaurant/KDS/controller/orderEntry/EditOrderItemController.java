@@ -45,6 +45,12 @@ public class EditOrderItemController {
 
     private OrderItem orderItem;
 
+    /**
+     * Gets all modification for an {@link OrderItem} and populates {@code modificationsVbox}
+     * with them.
+     *
+     * @param orderItem the order item to get the modifications from
+     */
     public void populateModifications(OrderItem orderItem) {
         String[] items = orderItem.getModifications().split(", ");
         for (String item : items) {
@@ -56,6 +62,12 @@ public class EditOrderItemController {
         }
     }
 
+    /**
+     * The initializing method. Sets the {@link OrderItem} instance variable and populates
+     * the UI with the details
+     *
+     * @param item the order item to edit
+     */
     public void setOrderItem(OrderItem item) {
         this.orderItem = item;
         selectedItemLabel.setText(item.getMenuItem().getName());
@@ -64,8 +76,13 @@ public class EditOrderItemController {
         quantitySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, orderItem.getQuantity()));
     }
 
-
-    //Creates the modification, prefix should be either 'Extra' or 'No'
+    /**
+     * Creates a modification and adds it to {@code modificationsVbox}. Clicking the
+     * modification removes it.
+     *
+     * @param prefix     the modification prefix, should be either 'Extra' or 'No'
+     * @param ingredient the ingredient that should be added or removed
+     */
     public void addModification(String prefix, String ingredient) {
         boolean exists = modificationsVbox.getChildren().stream() //Checks if the modification already exists
                 .filter(node -> node instanceof Label)
@@ -81,6 +98,12 @@ public class EditOrderItemController {
         }
     }
 
+    /**
+     * Populates the {@code modificationVbox} with all the {@link MenuItem}s ingredients.
+     * Each ingredient gets two {@link Button}s to add an extra/no modification.
+     *
+     * @param menuItem the menu item to get the ingredients from
+     */
     public void populateIngredients(MenuItem menuItem) {
         selectedItemLabel.setText(menuItem.getName());
 
@@ -109,6 +132,7 @@ public class EditOrderItemController {
         modificationsVbox.getChildren().add(new Separator());
     }
 
+
     @FXML
     public void addExtra() {
         if (!selectedItemLabel.getText().equals("No item selected")) {
@@ -116,6 +140,9 @@ public class EditOrderItemController {
         }
     }
 
+    /**
+     * Saves the changes to the {@link OrderItem} and closes the stage
+     */
     @FXML
     public void editOrderItem() {
         String mods = modificationsVbox.getChildren().stream()
@@ -132,6 +159,5 @@ public class EditOrderItemController {
 
     @FXML
     public void initialize() {
-
     }
 }

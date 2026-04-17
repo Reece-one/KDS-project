@@ -110,6 +110,11 @@ public class EditMenuItemController {
         }
     }
 
+    /**
+     * Gets all {@link Station}s and creates a {@link CheckBox} for each and injects them
+     * into the {@code StationFlowPane}. Any stations that this {@link MenuItem}
+     * is linked to are checked by default
+     */
     private void loadStationCheckboxes() {
         stationFlowPane.getChildren().clear();
         List<Station> itemStations = menuItem.getStations();
@@ -122,6 +127,14 @@ public class EditMenuItemController {
         }
     }
 
+    /**
+     * an entry into the {@link TextField} adds the item into a {@link Set} and creates a
+     * and refreshed the {@link FlowPane}
+     *
+     * @param textField the name of the tag
+     * @param set       the set of tags
+     * @param flowPane  the flow pane where the tags are injected
+     */
     private void addTag(TextField textField, Set<String> set, FlowPane flowPane) {
         String value = textField.getText();
         if (value == null || value.trim().isEmpty()) return;
@@ -140,6 +153,9 @@ public class EditMenuItemController {
         addTag(allergenTextField, allergens, allergensFlowPane);
     }
 
+    /**
+     * Saves the changes to the current {@link MenuItem} and closes the stage
+     */
     @FXML
     private void onSave() throws Exception {
         if (nameTextField.getText().trim().isEmpty()

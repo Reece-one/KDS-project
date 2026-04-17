@@ -3,7 +3,9 @@ package com.restaurant.KDS.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-
+/**
+ * an Entity that represents a singular item that is part of an {@link Order}.
+ */
 @Entity
 @Table(name = "order_items")
 public class OrderItem {

@@ -82,6 +82,9 @@ public class OrderEntryController {
 
     private MenuItem menuItem;
 
+    /**
+     * Creates a blank {@link Order}
+     */
     public void createBlankOrder() {
         if (order.getId() == null) {
             String tableName = tableNameField.getText();
@@ -95,7 +98,14 @@ public class OrderEntryController {
             orderService.saveOrder(order);
         }
     }
-    //Creates the modification, prefix should be either 'Extra' or 'No'
+
+    /**
+     * Creates a modification and adds it to {@code modificationsVbox}. Clicking the
+     * modification removes it.
+     *
+     * @param prefix     the modification prefix, should be either 'Extra' or 'No'
+     * @param ingredient the ingredient that should be added or removed
+     */
     public void addModification(String prefix, String ingredient) {
         boolean exists = modificationsVbox.getChildren().stream() //Checks if the modification already exists
                 .filter(node -> node instanceof Label)
@@ -111,6 +121,12 @@ public class OrderEntryController {
         }
     }
 
+    /**
+     * Populates the {@code modificationVbox} with all the {@link MenuItem}s ingredients.
+     * Each ingredient gets two {@link Button}s to add an extra/no modification.
+     *
+     * @param menuItem the menu item to get the ingredients from
+     */
     public void populateIngredients(MenuItem menuItem) {
         selectedItemLabel.setText(menuItem.getName());
 
@@ -137,6 +153,11 @@ public class OrderEntryController {
         modificationsVbox.getChildren().add(new Separator());
     }
 
+    /**
+     * Populates {menuItemsByCategory} depending on the category of {@link MenuItem}s.
+     *
+     * @param category the item's category
+     */
     public void showByCategory(String category) {
         List<MenuItem> items = menuService.findByCategory(category);
         menuItemsByCategory.getChildren().clear();
@@ -161,6 +182,9 @@ public class OrderEntryController {
         }
     }
 
+    /**
+     * Populates {@code categoryHbox} with buttons corresponding to every category
+     */
     public void populateCategories() {
         List<String> categories = menuService.getCategories();
         categoryHbox.getChildren().clear();
@@ -174,6 +198,7 @@ public class OrderEntryController {
             categoryHbox.getChildren().add(button);
         }
     }
+
 
     public void loadEditOrderView(ConfigurableApplicationContext springContext, Node node, OrderItem orderItem) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EditOrderItem.fxml"));
@@ -191,6 +216,10 @@ public class OrderEntryController {
         modal.showAndWait();
     }
 
+    /**
+     * Populates {@code currentOrderVbox} with the list of {@link OrderItem}s added to
+     * the order. Clicking the item loads the view to edit that order item.
+     */
     public void populateCurrentOrder() {
         currentOrderVbox.getChildren().clear();
         List<OrderItem> items = order.getOrderItems();
@@ -203,7 +232,7 @@ public class OrderEntryController {
             vbox.getChildren().addAll(name, modification, quantity);
             vbox.setOnMouseClicked(event -> {
                 try {
-                    loadEditOrderView(springContext, vbox,  item);
+                    loadEditOrderView(springContext, vbox, item);
                     populateCurrentOrder();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -220,6 +249,10 @@ public class OrderEntryController {
         }
     }
 
+    /**
+     * Creates an {@link OrderStation} entry for every unique {@link Station} that exists
+     * among the {@link OrderItem}s
+     */
     @FXML
     public void createOrderStations() {
         Set<Station> stations = new HashSet<>();
@@ -234,6 +267,10 @@ public class OrderEntryController {
         }
     }
 
+    /**
+     * Updates the blank {@link Order} with the fields from the view and sets the status
+     * to "Open". Resets the view so another order can be made.
+     */
     @FXML
     public void onSubmit() {
         if (!order.getOrderItems().isEmpty() && !tableNameField.getText().isEmpty() && eatInCombo.getValue() != null) {
@@ -258,6 +295,9 @@ public class OrderEntryController {
         }
     }
 
+    /**
+     * Creates an {@link OrderItem} from fields and adds it to the {@link Order}
+     */
     @FXML
     public void addToOrder() {
         OrderItem orderItem = new OrderItem();
@@ -276,9 +316,11 @@ public class OrderEntryController {
         order = orderService.findById(order.getId()).get();
         populateCurrentOrder();
         totalLabel.setText("£ " + orderItemService.getTotalByOrder(order));
-
     }
 
+    /**
+     * Deletes all {@link OrderItem}s from the current order.
+     */
     @FXML
     public void onClear() {
         orderItemService.deleteByOrder(order);

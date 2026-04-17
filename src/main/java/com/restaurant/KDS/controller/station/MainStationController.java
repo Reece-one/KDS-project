@@ -25,8 +25,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -53,6 +51,7 @@ public class MainStationController extends BaseStationController {
                 .toList();
     }
 
+
     @Override
     public void onCardClick(Order order, VBox container) {
         orderStationService.markComplete(order, station);
@@ -66,7 +65,6 @@ public class MainStationController extends BaseStationController {
         getAnalytics();
     }
 
-    //Gets only the order items that correspond to the station
     @Override
     public List<OrderItem> getOrderItems(Order order) {
         return order.getOrderItems().stream()
@@ -75,7 +73,6 @@ public class MainStationController extends BaseStationController {
                 .toList();
     }
 
-    //Compares orders stations by status for sorting
     @Override
     public Comparator<Node> getOrderCardComparator() {
         return (a, b) -> {

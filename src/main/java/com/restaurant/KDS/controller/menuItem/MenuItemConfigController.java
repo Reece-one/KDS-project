@@ -46,6 +46,10 @@ public class MenuItemConfigController {
         ViewHelper.loadView("/fxml/AddMenuItem.fxml", menuItemTableView, springContext);
     }
 
+    /**
+     * On initialize, create a table with each row representing a {@link MenuItem} entry.
+     * Clicking the row open a view to edit the item.
+     */
     @FXML
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));

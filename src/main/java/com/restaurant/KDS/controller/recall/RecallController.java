@@ -39,8 +39,7 @@ public class RecallController {
         this.orderStationService = orderStationService;
     }
 
-
-
+    /*
     @FXML
     //Gets only orders that have at least one item that corresponds to the current station
     public List<Order> completeOrdersByStation() {
@@ -50,8 +49,14 @@ public class RecallController {
                                 .anyMatch(s -> s.getId().equals(station.getId()))))
                 .toList();
     }
+     */
 
-    //Gets only the order items that correspond to the station
+    /**
+     *  Gets only the {@link OrderItem}s that correspond to the {@link Station}.
+     *
+     * @param order the {@link Order} to get the order items come from
+     * @return
+     */
     public List<OrderItem> completeOrderItemsByOrder(Order order) {
         return order.getOrderItems().stream()
                 .filter(orderItem -> orderItem.getMenuItem().getStations().stream()
@@ -59,6 +64,15 @@ public class RecallController {
                 .toList();
     }
 
+    /**
+     * The initializing method. Gets all {@link Order}s where the {@link OrderStation}
+     * linked to this {@link Station} "is completed" column is set to {@code true}.
+     * creates a root {@link Node} for each and populates it with the details
+     * and a checkbox. Clicking the order node expands it to show more details
+     * about the order.
+     *
+     * @param station the station linked to this instance
+     */
     @FXML
     public void setStation(Station station) {
         this.station = station;
@@ -129,6 +143,11 @@ public class RecallController {
     public void initialize() {
     }
 
+    /**
+     * All {@link Order} nodes that are checked have their corresponding {@link OrderStation}
+     * "is completed" column set to {@code false} and "is recalled" column set to
+     * {@code false}.
+     */
     @FXML
     public void onRecall() {
         //Get the checked orders from the checkbox data

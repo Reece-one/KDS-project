@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * An entity that represents an item on the menu.
+ */
 @Entity
 @Table(name = "menu_items")
 public class MenuItem {

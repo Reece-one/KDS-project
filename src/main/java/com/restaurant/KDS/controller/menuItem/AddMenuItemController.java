@@ -133,7 +133,6 @@ public class AddMenuItemController {
     /**
      * Uses filled in fields to create a new {@link MenuItem} then returns to the
      * previous stage
-     *
      */
     @FXML
     private void onSubmit(ActionEvent event) throws Exception {

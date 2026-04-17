@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 import javafx.scene.control.Button;
+
 import java.util.List;
 
 @Component
@@ -28,7 +29,11 @@ public class StationConfigController {
         this.springContext = springContext;
     }
 
-    private void resetStation () {
+    /**
+     * Creates a {@link Button} for every {@link Station} entry and its it to station
+     * {@code stationFlowPane}.
+     */
+    private void resetStation() {
         stationFlowPane.getChildren().clear();
         List<Station> stations = stationService.getAllStations();
 

@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An entity that represents an order placed by a customer
+ */
 @Entity
 @Table(name = "orders")
 public class Order {

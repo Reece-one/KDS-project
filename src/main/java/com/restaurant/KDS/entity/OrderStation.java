@@ -2,6 +2,9 @@ package com.restaurant.KDS.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * An entity that represents the links between a {@link Station} and {@link Order}.
+ */
 @Entity
 public class OrderStation {
 

@@ -30,6 +30,10 @@ public class AddStationController {
         this.springContext = springContext;
     }
 
+    /**
+     * Creates a new {@link Station} entry and opens a new {@link Stage} for that stations
+     * view.
+     */
     @FXML
     private void onSubmit(ActionEvent event) throws IOException {
         if (nameTextField.getText().trim().isEmpty()) {

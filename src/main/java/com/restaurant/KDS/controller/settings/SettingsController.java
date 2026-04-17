@@ -1,7 +1,6 @@
 package com.restaurant.KDS.controller.settings;
 
 import com.restaurant.KDS.entity.Station;
-import com.restaurant.KDS.util.ViewHelper;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -10,7 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.util.prefs.Preferences;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +50,12 @@ public class SettingsController {
         setStationId(station.getId());
     }
 
+    /**
+     * Sets the {@link Station} ID and populates the settings fields according to their
+     * saves {@link Preferences}.
+     *
+     * @param stationId the station ID of the station of this instance
+     */
     public void setStationId(Long stationId) {
         this.stationId = stationId;
         //Gets saved font preference
@@ -78,6 +85,10 @@ public class SettingsController {
         lateOrderTimeTextField.setText(String.valueOf(lateOrderTime));
     }
 
+    /**
+     * Creates all the {@link Preferences} from the inputs on all the field in the view.
+     * The {@link Station} ID from the instance is used in all the keys.
+     */
     public void initialize() {
         fontSlider.setMin(12);
         fontSlider.setMax(32);

@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
+/**
+ * An entity that represents a working station in a kitchen.
+ */
 @Entity
 @Table(name = "stations")
 public class Station {

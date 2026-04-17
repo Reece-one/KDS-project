@@ -23,14 +23,17 @@ public class ExpoRecallController {
     @FXML
     private VBox recallVbox;
 
-    private List<Long> completedTimes;
-
     private final OrderService orderService;
 
     public ExpoRecallController(OrderService orderService) {
         this.orderService = orderService;
     }
 
+    /**
+     * Gets all complete {@link Order}s and creates a root {@link Node} for each and
+     * populates it with the details and a checkbox. Clicking the order node
+     * expands it to show more details about the order.
+     */
     @FXML
     public void initialize() {
         List<Order> completeOrders = orderService.findByStatus("Complete");
@@ -95,6 +98,9 @@ public class ExpoRecallController {
         });
     }
 
+    /**
+     * All {@link Order} nodes that are checked have their status changed to "Recalled"
+     */
     @FXML
     public void onRecall() {
         //Get the checked orders from the checkbox data
