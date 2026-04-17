@@ -222,7 +222,6 @@ public abstract class BaseStationController {
                 mainFlowPane.getScene().getRoot().getStylesheets().add(SettingsController.class.getResource("/css/dark-styles.css").toExternalForm());
             }
         });
-
     }
 
     /**
@@ -279,7 +278,7 @@ public abstract class BaseStationController {
     }
 
     /**
-     * Initializes the main station screen and creates a timeline to refresh it ever
+     * Initializes the main station screen and creates a timeline to refresh it every
      * 2 seconds
      */
     public void refresh() {

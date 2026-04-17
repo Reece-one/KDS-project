@@ -22,6 +22,12 @@ public class AiService {
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Builds a JSON to send to DeepSeek API, then receives the response and coverts it.
+     *
+     * @param prompt the exact prompt to ask the LLM
+     * @return the LLM response
+     */
     public String askAi(String prompt) throws Exception {
         // Build the message
         ObjectNode message = mapper.createObjectNode();

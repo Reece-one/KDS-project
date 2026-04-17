@@ -95,7 +95,7 @@ public class EditMenuItemController {
      * Adds tags to the {@link FlowPane} for every {@link String} in the {@link Set}.
      *
      * @param set the set which the tags are composed of
-     * @param flowPane the flowpane where the tags are added
+     * @param flowPane the flow pane where the tags are added
      */
     private void refreshTags(Set<String> set, FlowPane flowPane) {
         flowPane.getChildren().clear();

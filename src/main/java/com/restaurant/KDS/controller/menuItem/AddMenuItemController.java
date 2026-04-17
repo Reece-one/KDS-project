@@ -74,13 +74,13 @@ public class AddMenuItemController {
     }
 
     /**
-     * an entry into the {@link TextField} adds the item into a {@link Set} and creates a
+     * An entry into the {@link TextField} adds the item into a {@link Set} and creates a
      * tag of the item into the {@link FlowPane} . Clicking the tag removes the item
      * from the set and flow pane.
      *
      * @param textField the name of the tag
      * @param set       the set of tags
-     * @param flowPane  the flowpane where the tags are injected
+     * @param flowPane  the flow pane where the tags are injected
      */
     private void addTag(TextField textField, Set<String> set, FlowPane flowPane) {
         String value = textField.getText();
