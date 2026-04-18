@@ -75,12 +75,6 @@
             <version>4.0.18</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.testfx</groupId>
-            <artifactId>openjfx-monocle</artifactId>
-            <version>jdk-12.0.1+2</version>
-            <scope>test</scope>
-        </dependency>
 	</dependencies>
 
 	<build>
@@ -112,12 +106,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <testfx.robot>glass</testfx.robot>
-                        <testfx.headless>true</testfx.headless>
-                        <prism.order>sw</prism.order>
-                        <prism.text>t2k</prism.text>
-                        <java.awt.headless>true</java.awt.headless>
-                        <glass.platform>Monocle</glass.platform>
-                        <monocle.platform>Headless</monocle.platform>
+                        <java.awt.headless>false</java.awt.headless>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

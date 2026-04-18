@@ -37,5 +37,8 @@ jobs:
       - name: Make Maven wrapper executable
         run: chmod +x ./mvnw
 
+      - name: Install Xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
       - name: Run tests
-        run: ./mvnw test
+        run: xvfb-run --auto-servernum ./mvnw test
