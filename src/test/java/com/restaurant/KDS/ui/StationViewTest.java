@@ -2,6 +2,11 @@ package com.restaurant.KDS.ui;
 
 import com.restaurant.KDS.controller.station.MainStationController;
 import com.restaurant.KDS.entity.*;
+import com.restaurant.KDS.repository.MenuItemRepository;
+import com.restaurant.KDS.repository.OrderItemRepository;
+import com.restaurant.KDS.repository.OrderRepository;
+import com.restaurant.KDS.repository.OrderStationRepository;
+import com.restaurant.KDS.repository.StationRepository;
 import com.restaurant.KDS.service.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,13 +14,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -32,7 +37,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@Transactional
 @SpringBootTest
 @ActiveProfiles("test")
 @ExtendWith(ApplicationExtension.class)
@@ -51,6 +55,25 @@ public class StationViewTest {
     private OrderItemService orderItemService;
     @Autowired
     private OrderStationService orderStationService;
+    @Autowired
+    private OrderStationRepository orderStationRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private MenuItemRepository menuItemRepository;
+    @Autowired
+    private StationRepository stationRepository;
+
+    @AfterEach
+    void cleanup() {
+        orderStationRepository.deleteAll();
+        orderItemRepository.deleteAll();
+        orderRepository.deleteAll();
+        menuItemRepository.deleteAll();
+        stationRepository.deleteAll();
+    }
 
     @Start
     public void start(Stage stage) throws Exception {
@@ -112,6 +135,13 @@ public class StationViewTest {
     void bumpOrderOff(FxRobot robot) throws Exception {
         robot.clickOn(".order-card-header");
 
-        FxAssert.verifyThat("#order-card-header", NodeMatchers.isVisible());
+        Order order = orderService.findAll().get(0);
+        Station grill = stationService.getAllStations().get(0);
+        assertTrue(orderStationService.findByOrderAndStation(order, grill)
+                .orElseThrow().isCompleted());
+
+        FlowPane pane = robot.lookup("#mainFlowPane").queryAs(FlowPane.class);
+        assertTrue(pane.getChildren().isEmpty());
     }
 }
+

@@ -1,6 +1,8 @@
 package com.restaurant.KDS.ui;
 
 import com.restaurant.KDS.entity.Station;
+import com.restaurant.KDS.repository.MenuItemRepository;
+import com.restaurant.KDS.repository.StationRepository;
 import com.restaurant.KDS.service.MenuService;
 import com.restaurant.KDS.service.StationService;
 import javafx.fxml.FXMLLoader;
@@ -8,13 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -24,7 +26,6 @@ import org.testfx.matcher.control.TextInputControlMatchers;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@Transactional
 @SpringBootTest
 @ActiveProfiles("test")
 @ExtendWith(ApplicationExtension.class)
@@ -36,6 +37,16 @@ public class AddMenuItemViewTest {
     private StationService stationService;
     @Autowired
     private MenuService menuService;
+    @Autowired
+    private MenuItemRepository menuItemRepository;
+    @Autowired
+    private StationRepository stationRepository;
+
+    @AfterEach
+    void cleanup() {
+        menuItemRepository.deleteAll();
+        stationRepository.deleteAll();
+    }
 
     @Start
     private void start(Stage stage) throws Exception {
@@ -70,12 +81,14 @@ public class AddMenuItemViewTest {
 
     @Test
     void createMenuItem(FxRobot robot) {
+        Long stationId = stationService.getAllStations().get(0).getId();
+
         robot.clickOn("#nameTextField").write("Burger");
         robot.clickOn("#priceTextField").write("10");
         robot.clickOn("#categoryTextField").write("Main");
         robot.clickOn("#ingredientTextField").write("Bread");
         robot.clickOn("Add");
-        robot.clickOn("#1checkBox");
+        robot.clickOn("#" + stationId + "checkBox");
         robot.clickOn("#availableCheckBox");
         robot.clickOn("#timeTextField").write("5");
         robot.clickOn("Create");

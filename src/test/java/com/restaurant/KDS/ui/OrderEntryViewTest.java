@@ -3,6 +3,10 @@ package com.restaurant.KDS.ui;
 import com.restaurant.KDS.entity.MenuItem;
 import com.restaurant.KDS.entity.Order;
 import com.restaurant.KDS.entity.Station;
+import com.restaurant.KDS.repository.MenuItemRepository;
+import com.restaurant.KDS.repository.OrderItemRepository;
+import com.restaurant.KDS.repository.OrderRepository;
+import com.restaurant.KDS.repository.StationRepository;
 import com.restaurant.KDS.service.MenuService;
 import com.restaurant.KDS.service.OrderItemService;
 import com.restaurant.KDS.service.OrderService;
@@ -11,13 +15,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -31,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-@Transactional
 @SpringBootTest
 @ActiveProfiles("test")
 @ExtendWith(ApplicationExtension.class)
@@ -47,7 +50,22 @@ public class OrderEntryViewTest {
     private OrderService orderService;
     @Autowired
     private OrderItemService orderItemService;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private MenuItemRepository menuItemRepository;
+    @Autowired
+    private StationRepository stationRepository;
 
+    @AfterEach
+    void cleanup() {
+        orderItemRepository.deleteAll();
+        orderRepository.deleteAll();
+        menuItemRepository.deleteAll();
+        stationRepository.deleteAll();
+    }
 
     @Start
     public void start(Stage stage) throws Exception {

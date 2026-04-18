@@ -1,19 +1,20 @@
 package com.restaurant.KDS.ui;
 
 import com.restaurant.KDS.entity.Station;
+import com.restaurant.KDS.repository.StationRepository;
 import com.restaurant.KDS.service.StationService;
 import jakarta.validation.constraints.AssertTrue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -21,7 +22,6 @@ import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.TextInputControlMatchers;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 @SpringBootTest
 @ActiveProfiles("test")
 @ExtendWith(ApplicationExtension.class)
@@ -31,6 +31,13 @@ public class EditStationViewTest {
     private ConfigurableApplicationContext springContext;
     @Autowired
     private StationService stationService;
+    @Autowired
+    private StationRepository stationRepository;
+
+    @AfterEach
+    void cleanup() {
+        stationRepository.deleteAll();
+    }
 
     @Start
     private void start(Stage stage) throws Exception {
