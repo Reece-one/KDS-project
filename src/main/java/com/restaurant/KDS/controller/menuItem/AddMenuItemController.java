@@ -118,6 +118,7 @@ public class AddMenuItemController {
         stationFlowPane.getChildren().clear();
         for (Station station : stations) {
             CheckBox checkBox = new CheckBox(station.getName());
+            checkBox.setId(station.getId() + "checkBox");
             stationFlowPane.getChildren().add(checkBox);
         }
     }

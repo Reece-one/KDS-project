@@ -124,5 +124,6 @@ public class OrderItemServiceTest {
         orderItemService.saveOrderItem(orderItem);
 
         assertEquals(0, BigDecimal.valueOf(10.00).compareTo(orderItem.getOrder().getTotal()));
+
     }
 }
