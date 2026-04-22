@@ -6,6 +6,7 @@ import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.AiService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
+import com.restaurant.KDS.util.PerfTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -51,6 +52,8 @@ public abstract class BaseStationController {
 
     @FXML
     protected Label estimatedWaitLabel;
+
+    protected Timeline refreshTimeLine, aiRefreshTimeLine;
 
     protected int onTime, completeOrders;
 
@@ -185,12 +188,14 @@ public abstract class BaseStationController {
      * Runs a loop so every open {@link Order} has an order card
      */
     public void populateOpenOrders() {
-        mainFlowPane.getChildren().clear();
-        List<Order> openOrders = getOrders();
-        for (Order order : openOrders) {
-            createOrderCard(order);
-        }
-        applyFontSize();
+        PerfTimer.time("BaseStation.populateOpenOrders", () -> {
+            mainFlowPane.getChildren().clear();
+            List<Order> openOrders = getOrders();
+            for (Order order : openOrders) {
+                createOrderCard(order);
+            }
+            applyFontSize();
+        });
     }
 
     /**
@@ -285,22 +290,32 @@ public abstract class BaseStationController {
     public void refresh() {
         onTime = 0;
         completeOrders = 0;
+        if (completedTimes.size() > 200) {
+            completedTimes.removeFirst();
+        }
         populateOpenOrders();
         sortOrders();
         applyColourMode();
         orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));
 
         //Automatically refreshes the screen
-        Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
-            populateOpenOrders();
-            sortOrders();
-            orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));
-        }));
-        refresh.setCycleCount(Timeline.INDEFINITE);
-        refresh.play();
+        if (refreshTimeLine != null) {
+            return;
+        } else {
+            refreshTimeLine = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+                populateOpenOrders();
+                sortOrders();
+                orderAmountLabel.setText(String.valueOf(mainFlowPane.getChildren().size()));
+            }));
+            refreshTimeLine.setCycleCount(Timeline.INDEFINITE);
+            refreshTimeLine.play();
+        }
 
-        Timeline aiRefresh = getEstimatedWaitTime();
-        aiRefresh.play();
+        if (aiRefreshTimeLine != null) {
+            return;
+        }
+        aiRefreshTimeLine = getEstimatedWaitTime();
+        aiRefreshTimeLine.play();
     }
 
 }

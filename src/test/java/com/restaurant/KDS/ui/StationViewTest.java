@@ -88,7 +88,7 @@ public class StationViewTest {
         item.setAvailable(true);
         item.setPrepTimeMinutes(3);
         item.setIngredients(new HashSet<>(List.of("bread")));
-        item.setStations(new ArrayList<>());
+        item.setStations(new ArrayList<>(List.of(grill)));
         menuService.saveMenuItem(item);
 
         Order order = new Order();

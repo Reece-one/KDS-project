@@ -10,6 +10,7 @@ import com.restaurant.KDS.entity.Station;
 import com.restaurant.KDS.service.AiService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
+import com.restaurant.KDS.util.PerfTimer;
 import com.restaurant.KDS.util.ViewHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,27 +45,24 @@ public class MainStationController extends BaseStationController {
     //Gets only orders that have at least one item that corresponds to the current station
     @Override
     public List<Order> getOrders() {
-        return orderService.findAll().stream()
-                .filter(order -> order.getStatus().equals("Open") || order.getStatus().equals("Complete"))
-                .filter(order -> orderStationService.findByOrderAndStation(order, station)
-                        .map(os -> !os.isCompleted())
-                        .orElse(false))
-                .toList();
+        return orderStationService.findOpenOrdersForStation(station);
     }
 
 
     @Override
     public void onCardClick(Order order, VBox container) {
-        orderStationService.markComplete(order, station);
-        container.getChildren().clear();
-        ((Pane) container.getParent()).getChildren().remove(container);
+        PerfTimer.time("MainStation.onCardClick", () -> {
+            orderStationService.markComplete(order, station);
+            container.getChildren().clear();
+            ((Pane) container.getParent()).getChildren().remove(container);
 
-        int lateOrderTime = Preferences.userNodeForPackage(SettingsController.class).getInt("lateOrderTime", 7);
-        if (orderService.isOnTime(order, lateOrderTime)) {
-            onTime++;
-        }
-        completeOrders++;
-        getAnalytics();
+            int lateOrderTime = Preferences.userNodeForPackage(SettingsController.class).getInt("lateOrderTime", 7);
+            if (orderService.isOnTime(order, lateOrderTime)) {
+                onTime++;
+            }
+            completeOrders++;
+            getAnalytics();
+        });
     }
 
     @Override

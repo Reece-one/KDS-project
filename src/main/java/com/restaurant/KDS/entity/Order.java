@@ -10,7 +10,7 @@ import java.util.List;
  * An entity that represents an order placed by a customer
  */
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", indexes = @Index(name = "idx_orders_status", columnList = "status"))
 public class Order {
 
     @Id

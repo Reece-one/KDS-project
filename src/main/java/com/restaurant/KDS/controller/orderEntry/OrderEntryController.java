@@ -7,6 +7,7 @@ import com.restaurant.KDS.service.MenuService;
 import com.restaurant.KDS.service.OrderItemService;
 import com.restaurant.KDS.service.OrderService;
 import com.restaurant.KDS.service.OrderStationService;
+import com.restaurant.KDS.util.PerfTimer;
 import com.restaurant.KDS.util.ViewHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -273,26 +274,28 @@ public class OrderEntryController {
      */
     @FXML
     public void onSubmit() {
-        if (!order.getOrderItems().isEmpty() && !tableNameField.getText().isEmpty() && eatInCombo.getValue() != null) {
-            order.setTableOrName(tableNameField.getText());
-            order.setEatInOrTakeAway(eatInCombo.getValue());
-            order.setStatus("Open");
-            order.setTotal(orderItemService.getTotalByOrder(order));
-            order.setOpenedAt(LocalDateTime.now());
-            orderService.saveOrder(order);
-            createOrderStations();
+        PerfTimer.time("OrderEntry.onSubmit", () -> {
+            if (!order.getOrderItems().isEmpty() && !tableNameField.getText().isEmpty() && eatInCombo.getValue() != null) {
+                order.setTableOrName(tableNameField.getText());
+                order.setEatInOrTakeAway(eatInCombo.getValue());
+                order.setStatus("Open");
+                order.setTotal(orderItemService.getTotalByOrder(order));
+                order.setOpenedAt(LocalDateTime.now());
+                orderService.saveOrder(order);
+                createOrderStations();
 
-            //Reset so another order can be made
-            order = new Order();
-            currentOrderVbox.getChildren().clear();
-            tableNameField.clear();
-            eatInCombo.setValue(null);
-            totalLabel.setText("£0.00");
-            modificationsVbox.getChildren().clear();
-            selectedItemLabel.setText("No item selected");
-        } else {
-            ViewHelper.showAlert("Please fill all the fields!");
-        }
+                //Reset so another order can be made
+                order = new Order();
+                currentOrderVbox.getChildren().clear();
+                tableNameField.clear();
+                eatInCombo.setValue(null);
+                totalLabel.setText("£0.00");
+                modificationsVbox.getChildren().clear();
+                selectedItemLabel.setText("No item selected");
+            } else {
+                ViewHelper.showAlert("Please fill all the fields!");
+            }
+        });
     }
 
     /**
@@ -300,22 +303,24 @@ public class OrderEntryController {
      */
     @FXML
     public void addToOrder() {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrder(order);
-        orderItem.setMenuItem(menuItem);
+        PerfTimer.time("OrderEntry.addToOrder", () -> {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setMenuItem(menuItem);
 
-        String mods = modificationsVbox.getChildren().stream()
-                .filter(node -> node instanceof Label)
-                .map(node -> ((Label) node).getText())
-                .collect(Collectors.joining(", ")); //Concatenates the modification and separates them with a comma
-        orderItem.setModifications(mods);
+            String mods = modificationsVbox.getChildren().stream()
+                    .filter(node -> node instanceof Label)
+                    .map(node -> ((Label) node).getText())
+                    .collect(Collectors.joining(", ")); //Concatenates the modification and separates them with a comma
+            orderItem.setModifications(mods);
 
-        orderItem.setQuantity(quantitySpinner.getValue());
-        createBlankOrder();
-        orderItemService.saveOrderItem(orderItem);
-        order = orderService.findById(order.getId()).get();
-        populateCurrentOrder();
-        totalLabel.setText("£ " + orderItemService.getTotalByOrder(order));
+            orderItem.setQuantity(quantitySpinner.getValue());
+            createBlankOrder();
+            orderItemService.saveOrderItem(orderItem);
+            order = orderService.findById(order.getId()).get();
+            populateCurrentOrder();
+            totalLabel.setText("£ " + orderItemService.getTotalByOrder(order));
+        });
     }
 
     /**

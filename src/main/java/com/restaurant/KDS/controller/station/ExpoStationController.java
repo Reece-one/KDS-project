@@ -49,7 +49,6 @@ public class ExpoStationController extends BaseStationController {
     @Override
     public void onCardClick(Order order, VBox container) {
         completeOrder(order, container);
-
     }
 
     @Override
@@ -149,5 +148,4 @@ public class ExpoStationController extends BaseStationController {
     public void initialize() {
         refresh();
     }
-
 }

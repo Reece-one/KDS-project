@@ -6,6 +6,10 @@ import jakarta.persistence.*;
  * An entity that represents the links between a {@link Station} and {@link Order}.
  */
 @Entity
+@Table(indexes = {
+        @Index(name = "idx_orderstation_station_completed", columnList = "station_id, completed"),
+        @Index(name = "idx_orderstation_order_station", columnList = "order_id, station_id")
+})
 public class OrderStation {
 
     @Id

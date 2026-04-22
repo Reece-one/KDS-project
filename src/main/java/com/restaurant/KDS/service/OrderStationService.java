@@ -49,4 +49,8 @@ public class OrderStationService {
                 .map(OrderStation::getOrder)
                 .toList();
     }
+
+    public List<Order> findOpenOrdersForStation(Station station) {
+        return orderStationRepository.findOpenOrdersForStation(station);
+    }
 }
