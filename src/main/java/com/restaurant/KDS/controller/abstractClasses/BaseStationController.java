@@ -61,6 +61,9 @@ public abstract class BaseStationController {
 
     protected static List<String> completedTimes = new ArrayList<>();
 
+    private static final Image EAT_IN_ICON = new Image(BaseStationController.class.getResourceAsStream("/images/chair.png"));
+        private static final Image TAKEAWAY_ICON = new Image(BaseStationController.class.getResourceAsStream("/images/food-package.png"));
+
 
     protected BaseStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext, AiService aiService) {
         this.orderService = orderService;
@@ -130,9 +133,9 @@ public abstract class BaseStationController {
         //Sets the order icon depending on eat out or takeaway
         ImageView inOrOutIcon = new ImageView();
         if (order.getEatInOrTakeAway().equals("Eat In")) {
-            inOrOutIcon.setImage(new Image(getClass().getResourceAsStream("/images/chair.png")));
+            inOrOutIcon.setImage(EAT_IN_ICON);
         } else {
-            inOrOutIcon.setImage(new Image(getClass().getResourceAsStream("/images/food-package.png")));
+            inOrOutIcon.setImage(TAKEAWAY_ICON);
         }
         inOrOutIcon.setFitHeight(30);
         inOrOutIcon.setFitWidth(30);

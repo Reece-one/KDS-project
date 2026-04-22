@@ -49,4 +49,9 @@ public class OrderService {
         double elapsed = Duration.between(order.getOpenedAt(), LocalDateTime.now()).toMillis() / 60000.0;
         return elapsed <= lateOrderTimeMinutes;
     }
+
+    public List<Order> findOpenAndRecalledOrders() {
+        return orderRepository.findOpenAndRecalledOrders();
+    }
+
 }

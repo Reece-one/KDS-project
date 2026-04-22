@@ -39,10 +39,7 @@ public class ExpoStationController extends BaseStationController {
 
     @Override
     public List<Order> getOrders() {
-        List<Order> orders = new ArrayList<>();
-        orders.addAll(orderService.findByStatus("Open"));
-        orders.addAll(orderService.findByStatus("Recalled"));
-        return orders;
+       return orderService.findOpenAndRecalledOrders();
     }
 
 
