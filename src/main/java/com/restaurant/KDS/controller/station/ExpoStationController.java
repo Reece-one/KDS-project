@@ -93,7 +93,6 @@ public class ExpoStationController extends BaseStationController {
                 orderStationService.save(station);
             }
         }
-
         order.setStatus("Complete");
         order.setCompletedAt(LocalDateTime.now());
         orderService.saveOrder(order);

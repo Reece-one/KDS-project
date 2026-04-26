@@ -44,12 +44,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * Loops the full order lifecycle "create order → main refresh → main bump →
  * expo refresh → expo complete" for a configured duration and records the
- * wall-clock time of each action to a CSV. Fails if any action exceeds the SLA.
+ * response time of each action to a CSV. Fails if any action exceeds the SLA.
  *
  * Disabled by default. To run:
  *   mvn -Dtest=SoakTest -Dsoak.minutes=240 test
  */
-//@Disabled("Long-running soak test — enable manually for NFR evidence runs")
+@Disabled("Long-running soak test — enable manually for NFR evidence runs")
 @SpringBootTest
 @ActiveProfiles("test")
 @ExtendWith(ApplicationExtension.class)
@@ -140,7 +140,7 @@ public class SoakTest {
                 long mainRefreshMs = measureOnFx("mainRefresh", csv, totalIterations, () -> mainController.populateOpenOrders());
 
                 // Bump the order at the main station
-                long mainBumpMs = measureOnFx("mainBump", csv, totalIterations, () -> bumpFirstMainCard(robot));
+                long mainBumpMs = measureOnFx("mainBump", csv, totalIterations, this::bumpFirstMainCard);
 
                 // Refreshes the expo station view
                 long expoRefreshMs = measureOnFx("expoRefresh", csv, totalIterations, () -> expoController.populateOpenOrders());
@@ -188,8 +188,8 @@ public class SoakTest {
         orderStationService.save(os);
     }
 
-    private void bumpFirstMainCard(FxRobot robot) {
-        FlowPane pane = robot.lookup("#mainFlowPane").queryAs(FlowPane.class);
+    private void bumpFirstMainCard() {
+        FlowPane pane = mainController.getMainFlowPane();
         if (pane == null || pane.getChildren().isEmpty()) return;
         VBox card = (VBox) pane.getChildren().get(0);
         Order order = (Order) card.getUserData();
@@ -197,7 +197,7 @@ public class SoakTest {
     }
 
     private void bumpFirstExpoCard() {
-        FlowPane pane = (FlowPane) expoRoot.lookup("#mainFlowPane");
+        FlowPane pane = expoController.getMainFlowPane();
         if (pane == null || pane.getChildren().isEmpty()) return;
         VBox card = (VBox) pane.getChildren().get(0);
         Order order = (Order) card.getUserData();

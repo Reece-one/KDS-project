@@ -12,6 +12,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -57,12 +58,16 @@ public abstract class BaseStationController {
 
     protected int onTime, completeOrders;
 
+    protected int lateOrderTime;
+
+    protected int fontSize = 18;
+
     protected final Preferences prefs = Preferences.userNodeForPackage(SettingsController.class);
 
     protected static List<String> completedTimes = new ArrayList<>();
 
     private static final Image EAT_IN_ICON = new Image(BaseStationController.class.getResourceAsStream("/images/chair.png"));
-        private static final Image TAKEAWAY_ICON = new Image(BaseStationController.class.getResourceAsStream("/images/food-package.png"));
+    private static final Image TAKEAWAY_ICON = new Image(BaseStationController.class.getResourceAsStream("/images/food-package.png"));
 
 
     protected BaseStationController(OrderService orderService, OrderStationService orderStationService, ConfigurableApplicationContext springContext, AiService aiService) {
@@ -106,6 +111,8 @@ public abstract class BaseStationController {
 
     public abstract Long getStationId();
 
+    public FlowPane getMainFlowPane() { return mainFlowPane; }
+
     /**
      * Builds the order card and adds it to the main {@link FlowPane}
      *
@@ -118,7 +125,6 @@ public abstract class BaseStationController {
 
         //Creates the header for the order card
         HBox headerHbox = new HBox();
-        int lateOrderTime = Preferences.userNodeForPackage(SettingsController.class).getInt("lateOrderTime", 7);
         if (orderService.isOnTime(order, lateOrderTime)) {
             headerHbox.setStyle("-fx-background-color: #8de969;"); // green
         } else {
@@ -192,9 +198,11 @@ public abstract class BaseStationController {
      */
     public void populateOpenOrders() {
         PerfTimer.time("BaseStation.populateOpenOrders", () -> {
+            lateOrderTime = prefs.getInt("lateOrderTime", 7);
+            Long stationId = getStationId();
+            fontSize = stationId == null ? 18 : prefs.getInt("fontSize_" + stationId, 18);
             mainFlowPane.getChildren().clear();
-            List<Order> openOrders = getOrders();
-            for (Order order : openOrders) {
+            for (Order order : getOrders()) {
                 createOrderCard(order);
             }
             applyFontSize();
@@ -208,14 +216,23 @@ public abstract class BaseStationController {
     private void applyFontSize() {
         Long stationId = getStationId();
         if (stationId == null) return;
+
         int size = prefs.getInt("fontSize_" + stationId, 18);
-        if (size != 18) {
-            mainFlowPane.lookupAll(".order-card-container").forEach(container -> {
-                container.lookupAll(".label").forEach(label -> {
-                    label.setStyle("-fx-font-size: " + size + "px;");
-                });
-            });
-        }
+
+        Scene scene = mainFlowPane.getScene();
+        if (scene == null) return;
+
+        String css = String.format("""
+                    .order-card-container .label {
+                        -fx-font-size: %dpx;
+                    }
+                """, size);
+
+        // Remove old dynamic stylesheet if needed
+        scene.getStylesheets().removeIf(s -> s.startsWith("data:text/css"));
+
+        // add new one
+        scene.getStylesheets().add("data:text/css," + css.replace("\n", "").replace(" ", "%20"));
     }
 
     /**
