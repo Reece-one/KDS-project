@@ -197,12 +197,13 @@ public abstract class BaseStationController {
      * Runs a loop so every open {@link Order} has an order card
      */
     public void populateOpenOrders() {
-        PerfTimer.time("BaseStation.populateOpenOrders", () -> {
-            lateOrderTime = prefs.getInt("lateOrderTime", 7);
-            Long stationId = getStationId();
-            fontSize = stationId == null ? 18 : prefs.getInt("fontSize_" + stationId, 18);
+        lateOrderTime = prefs.getInt("lateOrderTime", 7);
+        Long stationId = getStationId();
+        fontSize = stationId == null ? 18 : prefs.getInt("fontSize_" + stationId, 18);
+        List<Order> orders = getOrders();
+        PerfTimer.time("BaseStation.populateOpenOrders cards=" + orders.size(), () -> {
             mainFlowPane.getChildren().clear();
-            for (Order order : getOrders()) {
+            for (Order order : orders) {
                 createOrderCard(order);
             }
             applyFontSize();

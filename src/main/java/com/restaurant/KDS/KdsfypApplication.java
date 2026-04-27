@@ -23,39 +23,5 @@ public class KdsfypApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-       /* MenuItem burger = new MenuItem();
-        burger.setName("Burger");
-        burger.setPrice(BigDecimal.valueOf(10.00));
-        burger.setCategory("Main");
-
-        List<String> ingredients = new ArrayList<>();
-        ingredients.add("Bread");
-        ingredients.add("beef patty");
-        ingredients.add("cheese");
-        ingredients.add("pickle");
-        ingredients.add("onion");
-        ingredients.add("tomato");
-        ingredients.add("sauce");
-
-        burger.setIngredients(ingredients);
-
-        List<String> allergens = new ArrayList<>();
-        allergens.add("gluten");
-
-        burger.setAllergens(allergens);
-        burger.setAvailable(true);
-        burger.setPrepTimeMinutes(3);
-
-        List<String> stations = new ArrayList<>();
-        stations.add("grill");
-        stations.add("set");
-
-        menuService.saveMenuItem(burger);
-
-        List<MenuItem> menuItems = menuService.getAllMenuItems();
-        System.out.println("Menu items in database: " + menuItems.size());
-        menuItems.forEach(item -> System.out.println("- " + item.getName()));
-        */
-
     }
 }
